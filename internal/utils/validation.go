@@ -16,6 +16,7 @@ var (
 	containerNamePattern = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`)
 )
 
+// ValidateDockerImage validates a Docker image name format
 func ValidateDockerImage(image string) error {
 	if image == "" {
 		return fmt.Errorf("image name cannot be empty")
@@ -28,6 +29,7 @@ func ValidateDockerImage(image string) error {
 	return nil
 }
 
+// ValidateContainerName validates a Docker container name format
 func ValidateContainerName(name string) error {
 	if name == "" {
 		return fmt.Errorf("container name cannot be empty")
@@ -44,6 +46,7 @@ func ValidateContainerName(name string) error {
 	return nil
 }
 
+// ValidatePortMapping validates a port mapping string (host:container format)
 func ValidatePortMapping(portMapping string) error {
 	parts := strings.Split(portMapping, ":")
 	if len(parts) != 2 {
@@ -83,6 +86,7 @@ func validatePort(port string) error {
 	return nil
 }
 
+// ValidateVolumeMapping validates a volume mapping string (host:container format)
 func ValidateVolumeMapping(volumeMapping string) error {
 	parts := strings.Split(volumeMapping, ":")
 	if len(parts) < 2 || len(parts) > 3 {
@@ -130,6 +134,7 @@ func ValidateVolumeMapping(volumeMapping string) error {
 	return nil
 }
 
+// ValidateEnvironmentVariable validates an environment variable (KEY=value format)
 func ValidateEnvironmentVariable(envVar string) error {
 	if envVar == "" {
 		return fmt.Errorf("environment variable cannot be empty")
@@ -153,6 +158,7 @@ func ValidateEnvironmentVariable(envVar string) error {
 	return nil
 }
 
+// ValidateRestartPolicy validates a Docker restart policy
 func ValidateRestartPolicy(policy string) error {
 	validPolicies := map[string]bool{
 		"no":             true,
@@ -168,6 +174,7 @@ func ValidateRestartPolicy(policy string) error {
 	return nil
 }
 
+// ValidateHostname validates a hostname or IP address format
 func ValidateHostname(hostname string) error {
 	if hostname == "" {
 		return fmt.Errorf("hostname cannot be empty")
@@ -192,6 +199,7 @@ func ValidateHostname(hostname string) error {
 	return nil
 }
 
+// ValidateSynologyPath validates that a path is under a valid Synology volume
 func ValidateSynologyPath(path string) error {
 	if path == "" {
 		return fmt.Errorf("path cannot be empty")

@@ -7,8 +7,11 @@ import (
 )
 
 var (
+	// Version is the current version of SynoDeploy
 	Version string
+	// Commit is the git commit hash
 	Commit  string
+	// Date is the build date
 	Date    string
 )
 
@@ -28,6 +31,7 @@ func getVersion() string {
 	return fmt.Sprintf("%s (commit %s, built %s)", Version, Commit, Date)
 }
 
+// Execute runs the root command
 func Execute() error {
 	return rootCmd.Execute()
 }

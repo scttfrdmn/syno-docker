@@ -10,10 +10,13 @@ import (
 )
 
 const (
+	// DefaultSSHKeyName is the default SSH key filename
 	DefaultSSHKeyName = "id_rsa"
+	// DefaultSSHPort is the default SSH port
 	DefaultSSHPort    = 22
 )
 
+// FindSSHKey finds the first available SSH key in the user's .ssh directory
 func FindSSHKey() (string, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
@@ -36,6 +39,7 @@ func FindSSHKey() (string, error) {
 	return "", fmt.Errorf("no SSH key found in %s", sshDir)
 }
 
+// ValidateSSHKey validates that an SSH key file exists and is parseable
 func ValidateSSHKey(keyPath string) error {
 	// Check if file exists
 	if _, err := os.Stat(keyPath); os.IsNotExist(err) {
@@ -56,6 +60,7 @@ func ValidateSSHKey(keyPath string) error {
 	return nil
 }
 
+// ParseHostPort parses a host:port string and returns the host and port
 func ParseHostPort(hostPort string) (host string, port int, err error) {
 	if hostPort == "" {
 		return "", 0, fmt.Errorf("host cannot be empty")
@@ -86,6 +91,7 @@ func ParseHostPort(hostPort string) (host string, port int, err error) {
 	return "", 0, fmt.Errorf("invalid host:port format: %s", hostPort)
 }
 
+// NormalizeHost normalizes a hostname by removing protocols and extra characters
 func NormalizeHost(host string) string {
 	host = strings.TrimSpace(host)
 	host = strings.ToLower(host)
