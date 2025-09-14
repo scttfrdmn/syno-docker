@@ -1,8 +1,6 @@
 # golangci-lint configuration for Go Report Card A+ grade
 # Copyright 2025 Scott Friedman
 
-version: 2
-
 run:
   timeout: 5m
   tests: true
