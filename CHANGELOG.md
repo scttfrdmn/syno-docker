@@ -7,45 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2025-09-14
+
 ### Added
-- Initial implementation of SynoDeploy CLI tool
-- SSH connection management with key authentication
-- Docker client setup over SSH tunnels
-- Container deployment with `synodeploy run` command
-- docker-compose support with `synodeploy deploy` command
-- Container management with `synodeploy ps` and `synodeploy rm` commands
-- Configuration management in `~/.synodeploy/config.yaml`
-- Comprehensive unit tests with >90% coverage
-- Go Report Card A+ quality checks (gofmt, govet, golint, staticcheck, etc.)
-- Git pre-commit and pre-push hooks with quality enforcement
-- Makefile with build automation and quality checks
-- Cross-platform build support (macOS, Linux)
-- DSM 7.2+ Container Manager support
-- PATH resolution for Docker binary (`/usr/local/bin/docker`)
-- Volume path validation and Synology-specific path handling
-- Environment variable expansion in compose files
-- Port mapping validation and conflict detection
-- Restart policy support (no, always, unless-stopped, on-failure)
-- Network mode configuration
-- User and working directory specification
-- Command override support
-- Comprehensive error handling with actionable messages
+- **Core CLI Framework**: Complete command-line interface with `init`, `run`, `deploy`, `ps`, `rm` commands
+- **SSH Connection Management**: Secure SSH key authentication with automatic Docker binary path resolution
+- **Container Deployment**: Single container deployment with `synodeploy run` supporting ports, volumes, environment variables
+- **Docker Compose Support**: Multi-container deployment with `synodeploy deploy` for compose files
+- **Container Management**: List containers with `synodeploy ps` and remove with `synodeploy rm`
+- **Configuration System**: Persistent configuration in `~/.synodeploy/config.yaml` with validation
+- **DSM 7.2+ Optimization**: Built specifically for Container Manager with known constants and paths
+- **Volume Path Helpers**: Smart volume path handling with Synology volume validation
+- **Environment Variable Expansion**: Support for ${VAR} substitution in compose files
+- **Input Validation**: Comprehensive validation for Docker images, container names, ports, volumes
+- **Quality Assurance**: Go Report Card A+ compliance with automated quality checks
+- **Cross-Platform Builds**: Support for macOS and Linux (AMD64, ARM64)
+- **Professional Documentation**: Complete README, installation guide, and usage documentation
 
 ### Security
 - SSH key-only authentication (no password storage)
-- Input validation for all user-provided data
+- Input validation and sanitization for all user data
 - Path traversal prevention for volume mappings
-- Sensitive information scanning in git hooks
 - Secure defaults for container deployment
+- Sensitive information scanning in git hooks
 
-## [0.1.0] - 2025-01-XX
-
-### Added
-- Initial release of SynoDeploy
-- Basic container deployment functionality
-- SSH connection management
-- Configuration system
-- Command-line interface with cobra framework
+### Developer Experience
+- Comprehensive unit tests with high coverage
+- Git pre-commit and pre-push hooks with quality enforcement
+- Makefile with complete build automation
+- Goreleaser configuration for automated releases
+- GitHub Actions workflows for CI/CD
+- MIT license with proper copyright attribution
 
 ---
 
