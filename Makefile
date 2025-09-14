@@ -146,6 +146,31 @@ build-all:
 release: clean quality-check test build-all
 	@echo "Release build completed! 📦"
 
+# Integration tests
+integration-test:
+	@echo "Running integration tests..."
+	@if [ -z "$(NAS_HOST)" ]; then \
+		echo "Error: NAS_HOST environment variable is required"; \
+		echo "Usage: NAS_HOST=192.168.1.100 make integration-test"; \
+		exit 1; \
+	fi
+	go test -v -integration \
+		-nas-host=$(NAS_HOST) \
+		-nas-user=$(NAS_USER) \
+		-nas-key=$(NAS_SSH_KEY) \
+		-timeout=10m \
+		./tests/integration/...
+
+integration-test-full: integration-test
+	@echo "Generating integration test coverage report..."
+	go test -integration -coverprofile=integration_coverage.out \
+		-nas-host=$(NAS_HOST) \
+		-nas-user=$(NAS_USER) \
+		-nas-key=$(NAS_SSH_KEY) \
+		./tests/integration/...
+	go tool cover -html=integration_coverage.out -o integration_coverage.html
+	@echo "Integration test coverage report: integration_coverage.html"
+
 # Show help
 help:
 	@echo "SynoDeploy Makefile Commands:"
@@ -175,8 +200,13 @@ help:
 	@echo "  test        Run tests"
 	@echo "  coverage    Generate coverage report"
 	@echo "  pre-commit  Run pre-commit checks"
+	@echo "  integration-test      Run integration tests (requires NAS_HOST)"
+	@echo "  integration-test-full Full integration test with coverage"
 	@echo ""
 	@echo "Variables:"
 	@echo "  VERSION     Version string (default: git describe)"
 	@echo "  COMMIT      Git commit hash (default: git rev-parse)"
 	@echo "  DATE        Build date (default: current UTC)"
+	@echo "  NAS_HOST    Synology NAS IP for integration tests"
+	@echo "  NAS_USER    SSH username for integration tests (default: admin)"
+	@echo "  NAS_SSH_KEY SSH key path for integration tests (default: ~/.ssh/id_rsa)"

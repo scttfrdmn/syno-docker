@@ -1,0 +1,64 @@
+# SynoDeploy Integration Test Configuration
+# Copy this file and customize for your test environment
+
+# Synology NAS connection details
+nas:
+  host: "192.168.1.100"           # Your NAS IP address
+  user: "admin"                   # SSH username (must have docker group access)
+  port: 22                        # SSH port
+  ssh_key_path: "~/.ssh/id_rsa"   # Path to SSH private key
+
+# Test configuration
+test:
+  volume_path: "/volume1/synodeploy-test"  # Test volume directory
+  network_name: "synodeploy-test-net"     # Test network name
+  cleanup: true                           # Cleanup resources after tests
+  timeout: "5m"                          # Test timeout per suite
+  parallel: false                        # Run tests in parallel (experimental)
+
+# Test scenarios to run
+scenarios:
+  basic_deployment: true      # Single container deployment tests
+  compose_deployment: true    # Multi-container compose tests
+  lifecycle_management: true  # Start/stop/remove tests
+  volume_mapping: true        # Volume mount tests
+  network_connectivity: true  # Network connectivity tests
+  error_handling: true        # Error condition tests
+  performance: false          # Performance benchmarks (slow)
+  stress: false              # Stress tests (resource intensive)
+
+# Container images for testing
+images:
+  nginx: "nginx:alpine"       # Web server
+  postgres: "postgres:13"     # Database
+  redis: "redis:alpine"       # Cache
+  alpine: "alpine:latest"     # Utility container
+
+# Test data
+test_data:
+  html_content: |
+    <!DOCTYPE html>
+    <html>
+    <head><title>SynoDeploy Integration Test</title></head>
+    <body>
+        <h1>SynoDeploy Integration Test</h1>
+        <p>If you can see this page, the integration test is working!</p>
+        <p>Test timestamp: {{TIMESTAMP}}</p>
+    </body>
+    </html>
+
+  postgres_init: |
+    CREATE TABLE test_table (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    INSERT INTO test_table (name) VALUES ('test_data_1'), ('test_data_2');
+
+# Expected test results
+expectations:
+  container_startup_timeout: "30s"
+  http_response_timeout: "10s"
+  database_connection_timeout: "15s"
+  volume_mount_verification: true
+  network_connectivity_check: true

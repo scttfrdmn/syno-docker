@@ -1,0 +1,101 @@
+# Docker Compose test file for SynoDeploy integration tests
+version: '3.8'
+
+services:
+  web:
+    image: nginx:alpine
+    container_name: test-web-${TEST_ID}
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    volumes:
+      - "${TEST_VOLUME_PATH}/html:/usr/share/nginx/html:ro"
+      - "${TEST_VOLUME_PATH}/nginx.conf:/etc/nginx/nginx.conf:ro"
+    environment:
+      - NGINX_HOST=${TEST_HOST:-localhost}
+      - NGINX_PORT=80
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - test-network
+
+  api:
+    image: nginx:alpine  # Using nginx as a mock API for simplicity
+    container_name: test-api-${TEST_ID}
+    ports:
+      - "${API_PORT:-3000}:80"
+    volumes:
+      - "${TEST_VOLUME_PATH}/api:/usr/share/nginx/html:ro"
+    environment:
+      - API_ENV=test
+      - DATABASE_URL=postgres://testuser:testpass@db:5432/testdb
+    depends_on:
+      - db
+      - cache
+    restart: unless-stopped
+    networks:
+      - test-network
+
+  db:
+    image: postgres:13
+    container_name: test-db-${TEST_ID}
+    environment:
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpass
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+    volumes:
+      - "${TEST_VOLUME_PATH}/postgres-data:/var/lib/postgresql/data"
+      - "${TEST_VOLUME_PATH}/init.sql:/docker-entrypoint-initdb.d/init.sql:ro"
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    restart: unless-stopped
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U testuser -d testdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cache:
+    image: redis:alpine
+    container_name: test-cache-${TEST_ID}
+    ports:
+      - "${CACHE_PORT:-6379}:6379"
+    volumes:
+      - "${TEST_VOLUME_PATH}/redis.conf:/usr/local/etc/redis/redis.conf:ro"
+    command: redis-server /usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # Test utility container for network connectivity tests
+  test-client:
+    image: alpine:latest
+    container_name: test-client-${TEST_ID}
+    command: sleep 3600  # Keep container running for tests
+    networks:
+      - test-network
+    depends_on:
+      - web
+      - api
+      - db
+      - cache
+
+networks:
+  test-network:
+    driver: bridge
+    name: synodeploy-test-${TEST_ID}
+
+# Named volumes for testing volume management
+volumes:
+  postgres-data:
+    name: test-postgres-data-${TEST_ID}
+  shared-data:
+    name: test-shared-data-${TEST_ID}
