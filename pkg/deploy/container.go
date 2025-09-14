@@ -179,40 +179,18 @@ func generateContainerName(image string) string {
 	return name
 }
 
-func processVolumes(volumes []string, defaultVolumePath string) []string {
-	var processed []string
-	for _, volume := range volumes {
-		// If volume mapping starts with ./ or doesn't start with /, prepend default path
-		if strings.HasPrefix(volume, "./") || (!strings.HasPrefix(volume, "/") && strings.Contains(volume, ":")) {
-			parts := strings.SplitN(volume, ":", 2)
-			if len(parts) == 2 {
-				hostPath := parts[0]
-				if strings.HasPrefix(hostPath, "./") {
-					hostPath = strings.TrimPrefix(hostPath, "./")
-				}
-				if !strings.HasPrefix(hostPath, "/") {
-					hostPath = fmt.Sprintf("%s/%s", defaultVolumePath, hostPath)
-				}
-				volume = fmt.Sprintf("%s:%s", hostPath, parts[1])
-			}
-		}
-		processed = append(processed, volume)
-	}
-	return processed
-}
-
 // GetDockerClient returns a placeholder - not used in simple implementation
 func GetDockerClient() (*client.Client, error) {
 	// This is a placeholder for compatibility
 	// The simple implementation uses SSH commands directly
-	return nil, fmt.Errorf("Docker client not needed in simple implementation")
+	return nil, fmt.Errorf("docker client not needed in simple implementation")
 }
 
 // TestConnection tests Docker availability over SSH
 func TestDockerConnection(conn *synology.Connection) error {
 	// Test Docker command
 	if _, err := conn.ExecuteDockerCommand([]string{"version", "--format", "'{{.Server.Version}}'"}); err != nil {
-		return fmt.Errorf("Docker connection test failed: %w", err)
+		return fmt.Errorf("docker connection test failed: %w", err)
 	}
 
 	return nil

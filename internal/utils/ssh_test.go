@@ -137,7 +137,7 @@ V2k7V5J3G8JKvB2bQwJ8kDJ5ZGJ3h9VbQ4K2qh1L3J8Z9bV2k7V5J3G8JKvB2bQw
 	}{
 		{"nonexistent key", filepath.Join(tempDir, "nonexistent"), true},
 		{"invalid key content", invalidKeyPath, true},
-		{"valid key", validKeyPath, true},  // Our test key is malformed, so expect error
+		{"valid key", validKeyPath, true}, // Our test key is malformed, so expect error
 	}
 
 	for _, tt := range tests {

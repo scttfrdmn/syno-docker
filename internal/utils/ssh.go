@@ -91,12 +91,8 @@ func NormalizeHost(host string) string {
 	host = strings.ToLower(host)
 
 	// Remove protocol if present
-	if strings.HasPrefix(host, "http://") {
-		host = strings.TrimPrefix(host, "http://")
-	}
-	if strings.HasPrefix(host, "https://") {
-		host = strings.TrimPrefix(host, "https://")
-	}
+	host = strings.TrimPrefix(host, "http://")
+	host = strings.TrimPrefix(host, "https://")
 
 	// Remove trailing slash
 	host = strings.TrimSuffix(host, "/")

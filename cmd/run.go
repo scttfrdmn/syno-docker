@@ -88,9 +88,7 @@ func processVolumes(volumes []string, defaultVolumePath string) []string {
 			parts := strings.SplitN(volume, ":", 2)
 			if len(parts) == 2 {
 				hostPath := parts[0]
-				if strings.HasPrefix(hostPath, "./") {
-					hostPath = strings.TrimPrefix(hostPath, "./")
-				}
+				hostPath = strings.TrimPrefix(hostPath, "./")
 				if !strings.HasPrefix(hostPath, "/") {
 					hostPath = fmt.Sprintf("%s/%s", defaultVolumePath, hostPath)
 				}

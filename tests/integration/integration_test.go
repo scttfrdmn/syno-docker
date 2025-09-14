@@ -21,7 +21,6 @@ var (
 	nasUser         = flag.String("nas-user", "admin", "SSH username (admin or administrator)")
 	nasPort         = flag.Int("nas-port", 22, "SSH port")
 	nasKeyPath      = flag.String("nas-key", "", "SSH private key path")
-	cleanup         = flag.Bool("cleanup", true, "Cleanup test resources after tests")
 )
 
 // TestRunner manages the integration test environment

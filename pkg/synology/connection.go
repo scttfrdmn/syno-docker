@@ -1,7 +1,6 @@
 package synology
 
 import (
-	"context"
 	"fmt"
 	"io"
 	"os"
@@ -83,29 +82,6 @@ func (c *Connection) connectSSHWithKeyFile() error {
 	return nil
 }
 
-func (c *Connection) setupDockerClient() error {
-	// Create Docker client that uses SSH connection
-	dockerHost := fmt.Sprintf("ssh://%s@%s:%d", c.config.User, c.config.Host, c.config.Port)
-
-	dockerClient, err := client.NewClientWithOpts(
-		client.WithHost(dockerHost),
-		client.WithVersion("1.43"),
-	)
-	if err != nil {
-		return fmt.Errorf("failed to create Docker client: %w", err)
-	}
-
-	// Test Docker connection
-	ctx := context.Background()
-	_, err = dockerClient.Ping(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to ping Docker daemon: %w", err)
-	}
-
-	c.dockerAPI = dockerClient
-	return nil
-}
-
 func (c *Connection) Close() error {
 	var errs []string
 
@@ -164,12 +140,12 @@ func (c *Connection) GetDockerClient() *client.Client {
 func (c *Connection) TestConnection() error {
 	// Test SSH connection
 	if _, err := c.ExecuteCommand("echo 'SSH connection test'"); err != nil {
-		return fmt.Errorf("SSH connection test failed: %w", err)
+		return fmt.Errorf("ssh connection test failed: %w", err)
 	}
 
 	// Test Docker command
 	if _, err := c.ExecuteDockerCommand([]string{"version", "--format", "'{{.Server.Version}}'"}); err != nil {
-		return fmt.Errorf("Docker connection test failed: %w", err)
+		return fmt.Errorf("docker connection test failed: %w", err)
 	}
 
 	return nil

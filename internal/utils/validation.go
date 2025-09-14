@@ -14,9 +14,6 @@ var (
 
 	// Valid container name pattern
 	containerNamePattern = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`)
-
-	// Valid environment variable pattern
-	envVarPattern = regexp.MustCompile(`^[A-Z_][A-Z0-9_]*=.*$`)
 )
 
 func ValidateDockerImage(image string) error {

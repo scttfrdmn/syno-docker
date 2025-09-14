@@ -53,7 +53,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 
 	// Additional connection tests
 	if err := conn.TestConnection(); err != nil {
-		return fmt.Errorf("Docker connection test failed: %w\n\nTry:\n  1. Ensure Container Manager is installed and running\n  2. Verify your user is in the docker group\n  3. Check if Docker service is running: systemctl status pkg-ContainerManager-dockerd", err)
+		return fmt.Errorf("docker connection test failed: %w\n\nTry:\n  1. Ensure Container Manager is installed and running\n  2. Verify your user is in the docker group\n  3. Check if Docker service is running: systemctl status pkg-ContainerManager-dockerd", err)
 	}
 
 	// Save configuration
