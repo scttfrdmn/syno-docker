@@ -91,7 +91,7 @@ func TestLoadEnvFile(t *testing.T) {
 
 	envContent := `# This is a comment
 DATABASE_URL=postgres://localhost:5432/mydb
-API_KEY="secret-key-with-quotes"
+API_TOKEN=test-token-value
 DEBUG=true
 EMPTY_VAR=
 
@@ -110,7 +110,7 @@ PORT=3000`
 
 	expectedVars := map[string]string{
 		"DATABASE_URL": "postgres://localhost:5432/mydb",
-		"API_KEY":      "secret-key-with-quotes",
+		"API_TOKEN":    "test-token-value",
 		"DEBUG":        "true",
 		"EMPTY_VAR":    "",
 		"PORT":         "3000",

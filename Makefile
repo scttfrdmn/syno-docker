@@ -69,7 +69,7 @@ lint:
 		echo "Installing golint..."; \
 		go install golang.org/x/lint/golint@latest; \
 	fi
-	golint ./...
+	$$(go env GOPATH)/bin/golint ./...
 
 # Run staticcheck
 staticcheck:
@@ -78,7 +78,7 @@ staticcheck:
 		echo "Installing staticcheck..."; \
 		go install honnef.co/go/tools/cmd/staticcheck@$(STATICCHECK_VERSION); \
 	fi
-	staticcheck ./...
+	$$(go env GOPATH)/bin/staticcheck ./...
 
 # Run ineffassign
 ineffassign:
@@ -87,7 +87,7 @@ ineffassign:
 		echo "Installing ineffassign..."; \
 		go install github.com/gordonklaus/ineffassign@$(INEFFASSIGN_VERSION); \
 	fi
-	ineffassign ./...
+	$$(go env GOPATH)/bin/ineffassign ./...
 
 # Run misspell
 misspell:
@@ -96,7 +96,7 @@ misspell:
 		echo "Installing misspell..."; \
 		go install github.com/client9/misspell/cmd/misspell@$(MISSPELL_VERSION); \
 	fi
-	misspell -error .
+	$$(go env GOPATH)/bin/misspell -error .
 
 # Run gocyclo
 gocyclo:
@@ -105,7 +105,7 @@ gocyclo:
 		echo "Installing gocyclo..."; \
 		go install github.com/fzipp/gocyclo/cmd/gocyclo@$(GOCYCLO_VERSION); \
 	fi
-	gocyclo -over 10 .
+	$$(go env GOPATH)/bin/gocyclo -over 10 .
 
 # Install development dependencies (Go Report Card tools)
 deps:
