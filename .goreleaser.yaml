@@ -89,12 +89,12 @@ changelog:
     - title: Others
       order: 999
 
-# Homebrew tap configuration
+# Homebrew tap configuration (brews is correct for CLI tools)
 brews:
   - name: synodeploy
     ids:
       - synodeploy
-    # Repository for the Homebrew tap
+    # Repository for the Homebrew tap (must start with homebrew-)
     repository:
       owner: scttfrdmn
       name: homebrew-tap
@@ -123,15 +123,14 @@ brews:
     install: |
       bin.install "synodeploy"
       # Generate shell completions
-      output = Utils.safe_popen_read("#{bin}/synodeploy", "completion", "bash")
-      (bash_completion/"synodeploy").write output
-      output = Utils.safe_popen_read("#{bin}/synodeploy", "completion", "zsh")
-      (zsh_completion/"_synodeploy").write output
-      output = Utils.safe_popen_read("#{bin}/synodeploy", "completion", "fish")
-      (fish_completion/"synodeploy.fish").write output
-    # Tests
+      generate_completions_from_executable(bin/"synodeploy", "completion")
+    # Tests (required by Homebrew)
     test: |
-      system "#{bin}/synodeploy", "version"
+      system "#{bin}/synodeploy", "--version"
+      system "#{bin}/synodeploy", "--help"
+      # Test init command without actually connecting
+      output = shell_output("#{bin}/synodeploy init --help")
+      assert_match "Setup connection to Synology NAS", output
 
 # Linux packages
 nfpms:
