@@ -1,0 +1,75 @@
+# SynoDeploy .gitignore
+# Copyright 2025 Scott Friedman
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+dist/
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+coverage.html
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+/tmp/
+
+# Log files
+*.log
+
+# Configuration files (user-specific)
+config.yaml
+.synodeploy/
+
+# Build artifacts
+synodeploy
+synodeploy-*
+
+# GoReleaser artifacts
+goreleaser
+
+# Local environment files
+.env
+.env.local
+.env.*.local
+
+# Test coverage
+profile.out
+
+# Backup files
+*.bak
+*.backup
+
+# Documentation build files
+docs/_build/
+docs/.doctrees/

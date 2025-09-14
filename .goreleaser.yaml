@@ -1,0 +1,274 @@
+# GoReleaser configuration for SynoDeploy
+# Copyright 2025 Scott Friedman
+
+project_name: synodeploy
+
+before:
+  hooks:
+    # Run quality checks before building
+    - make quality-check
+    # Run tests
+    - go test ./...
+    # Ensure go.mod is tidy
+    - go mod tidy
+
+builds:
+  - id: synodeploy
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    main: ./main.go
+    binary: synodeploy
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+    flags:
+      - -trimpath
+
+archives:
+  - id: synodeploy
+    format: tar.gz
+    # Use zip for Windows
+    format_overrides:
+      - goos: windows
+        format: zip
+    name_template: >-
+      {{ .ProjectName }}-
+      {{- title .Os }}-
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    files:
+      - README.md
+      - LICENSE
+      - CHANGELOG.md
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+      - '^ci:'
+      - '^build:'
+      - '^refactor:'
+      - '^style:'
+      - 'merge conflict'
+      - Merge pull request
+      - Merge branch
+      - go mod tidy
+  groups:
+    - title: Features
+      regexp: "^.*feat[(\\w)]*:+.*$"
+      order: 0
+    - title: 'Bug fixes'
+      regexp: "^.*fix[(\\w)]*:+.*$"
+      order: 1
+    - title: 'Security'
+      regexp: "^.*sec[(\\w)]*:+.*$"
+      order: 2
+    - title: 'Performance'
+      regexp: "^.*perf[(\\w)]*:+.*$"
+      order: 3
+    - title: Others
+      order: 999
+
+# Homebrew tap configuration
+brews:
+  - name: synodeploy
+    ids:
+      - synodeploy
+    # Repository for the Homebrew tap
+    repository:
+      owner: scttfrdmn
+      name: homebrew-tap
+      branch: main
+    # URL template for downloading the archive
+    url_template: "https://github.com/scttfrdmn/synodeploy/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    # Git author used to commit to the repository
+    commit_author:
+      name: Scott Friedman
+      email: scott@friedman.dev
+    # The project name and current git tag are used in the format string
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+    # Folder inside the repository to put the formula
+    folder: Formula
+    # Homepage of the project
+    homepage: "https://github.com/scttfrdmn/synodeploy"
+    # Description of the project
+    description: "Deploy containers to Synology DSM 7.2+ with ease"
+    # License
+    license: "MIT"
+    # Setting this will prevent goreleaser to actually try to commit the updated
+    # formula - instead, the formula file will be stored on the dist folder only,
+    # leaving the responsibility of publishing it to the user
+    skip_upload: false
+    # Custom install script
+    install: |
+      bin.install "synodeploy"
+      # Generate shell completions
+      output = Utils.safe_popen_read("#{bin}/synodeploy", "completion", "bash")
+      (bash_completion/"synodeploy").write output
+      output = Utils.safe_popen_read("#{bin}/synodeploy", "completion", "zsh")
+      (zsh_completion/"_synodeploy").write output
+      output = Utils.safe_popen_read("#{bin}/synodeploy", "completion", "fish")
+      (fish_completion/"synodeploy.fish").write output
+    # Tests
+    test: |
+      system "#{bin}/synodeploy", "version"
+
+# Linux packages
+nfpms:
+  - id: synodeploy
+    package_name: synodeploy
+    vendor: Scott Friedman
+    homepage: https://github.com/scttfrdmn/synodeploy
+    maintainer: Scott Friedman <scott@friedman.dev>
+    description: Deploy containers to Synology DSM 7.2+ with ease
+    license: MIT
+    formats:
+      - deb
+      - rpm
+      - apk
+    bindir: /usr/bin
+    section: utils
+    priority: optional
+    meta: false
+    contents:
+      - src: ./README.md
+        dst: /usr/share/doc/synodeploy/README.md
+      - src: ./LICENSE
+        dst: /usr/share/doc/synodeploy/LICENSE
+      - src: ./CHANGELOG.md
+        dst: /usr/share/doc/synodeploy/CHANGELOG.md
+    scripts:
+      postinstall: |
+        echo "SynoDeploy installed successfully!"
+        echo "Run 'synodeploy init <your-nas-ip>' to get started."
+
+# Docker image (optional)
+dockers:
+  - image_templates:
+      - "ghcr.io/scttfrdmn/synodeploy:{{ .Version }}-amd64"
+      - "ghcr.io/scttfrdmn/synodeploy:latest-amd64"
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+    extra_files:
+      - README.md
+      - LICENSE
+
+  - image_templates:
+      - "ghcr.io/scttfrdmn/synodeploy:{{ .Version }}-arm64"
+      - "ghcr.io/scttfrdmn/synodeploy:latest-arm64"
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--platform=linux/arm64"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+    extra_files:
+      - README.md
+      - LICENSE
+
+docker_manifests:
+  - name_template: "ghcr.io/scttfrdmn/synodeploy:{{ .Version }}"
+    image_templates:
+      - "ghcr.io/scttfrdmn/synodeploy:{{ .Version }}-amd64"
+      - "ghcr.io/scttfrdmn/synodeploy:{{ .Version }}-arm64"
+  - name_template: "ghcr.io/scttfrdmn/synodeploy:latest"
+    image_templates:
+      - "ghcr.io/scttfrdmn/synodeploy:latest-amd64"
+      - "ghcr.io/scttfrdmn/synodeploy:latest-arm64"
+
+# Release configuration
+release:
+  # Repository to upload the release to
+  github:
+    owner: scttfrdmn
+    name: synodeploy
+  # If set to true, will not auto-publish the release
+  draft: false
+  # Whether to remove existing draft releases with the same name before creating
+  # a new one
+  replace_existing_draft: true
+  # Set to true if you want to disable this pipe
+  disable: false
+  # Release name template
+  name_template: "{{.ProjectName}} {{.Version}}"
+  # Header for the release body
+  header: |
+    ## SynoDeploy {{.Version}}
+
+    Welcome to this new release of SynoDeploy! 🎉
+
+    ### Quick Start
+
+    ```bash
+    # Install via Homebrew
+    brew install scttfrdmn/tap/synodeploy
+
+    # Or download binary directly
+    curl -L https://github.com/scttfrdmn/synodeploy/releases/download/{{.Tag}}/synodeploy-{{.Os}}-{{.Arch}}.tar.gz | tar xz
+    sudo mv synodeploy /usr/local/bin/
+    ```
+
+    ### Getting Started
+
+    ```bash
+    # Setup connection to your NAS
+    synodeploy init 192.168.1.100
+
+    # Deploy your first container
+    synodeploy run nginx:latest --port 8080:80
+    ```
+
+  # Footer for the release body
+  footer: |
+    ## Installation
+
+    ### Homebrew (macOS/Linux)
+    ```bash
+    brew install scttfrdmn/tap/synodeploy
+    ```
+
+    ### Direct Download
+    Download the appropriate binary for your platform from the assets below.
+
+    ### Checksums
+    All binaries are signed and checksums are available in `checksums.txt`.
+
+    ---
+    **Full Changelog**: https://github.com/scttfrdmn/synodeploy/compare/{{.PreviousTag}}...{{.Tag}}
+
+    **Questions?** Check out the [documentation](https://github.com/scttfrdmn/synodeploy/tree/main/docs) or [open an issue](https://github.com/scttfrdmn/synodeploy/issues).
+
+# GitHub Actions workflow will trigger on tag push
+# Make sure to set up the following secrets in your GitHub repository:
+# - HOMEBREW_TAP_GITHUB_TOKEN: Personal access token with repo permissions for homebrew tap
+# - GITHUB_TOKEN: Automatically provided by GitHub Actions
