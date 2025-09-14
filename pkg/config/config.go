@@ -10,17 +10,17 @@ import (
 
 const (
 	// DefaultUser is the default SSH username
-	DefaultUser       = "admin"
+	DefaultUser = "admin"
 	// DefaultPort is the default SSH port
-	DefaultPort       = 22
+	DefaultPort = 22
 	// DefaultVolumePath is the default volume path on Synology
 	DefaultVolumePath = "/volume1/docker"
 	// DefaultNetwork is the default Docker network
-	DefaultNetwork    = "bridge"
+	DefaultNetwork = "bridge"
 	// ConfigDir is the configuration directory name
-	ConfigDir         = ".synodeploy"
+	ConfigDir = ".synodeploy"
 	// ConfigFile is the configuration file name
-	ConfigFile        = "config.yaml"
+	ConfigFile = "config.yaml"
 )
 
 // Config represents the SynoDeploy configuration
