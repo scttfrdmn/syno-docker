@@ -2,7 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/scttfrdmn/synodeploy)](https://goreportcard.com/report/github.com/scttfrdmn/synodeploy)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/github/release/scttfrdmn/synodeploy.svg)](https://github.com/scttfrdmn/synodeploy/releases)
+[![Release](https://img.shields.io/badge/release-v0.1.0-blue.svg)](https://github.com/scttfrdmn/synodeploy/releases/tag/v0.1.0)
 
 **SynoDeploy** is a CLI tool that simplifies Docker container deployment to Synology NAS devices running DSM 7.2+. It handles SSH connection management, Docker client setup, and path resolution issues specific to Synology Container Manager.
 
