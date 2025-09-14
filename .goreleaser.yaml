@@ -97,7 +97,7 @@ brews:
     # Repository for the Homebrew tap (must start with homebrew-)
     repository:
       owner: scttfrdmn
-      name: homebrew-tap
+      name: homebrew-synodeploy
       branch: main
     # URL template for downloading the archive
     url_template: "https://github.com/scttfrdmn/synodeploy/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
