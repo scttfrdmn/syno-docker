@@ -42,8 +42,8 @@ func NewContainerOptions(image string) *ContainerOptions {
 	}
 }
 
-// DeployContainer deploys a container using direct Docker commands over SSH
-func DeployContainer(conn *synology.Connection, opts *ContainerOptions) (string, error) {
+// Container deploys a container using direct Docker commands over SSH
+func Container(conn *synology.Connection, opts *ContainerOptions) (string, error) {
 	if opts.Name == "" {
 		opts.Name = generateContainerName(opts.Image)
 	}

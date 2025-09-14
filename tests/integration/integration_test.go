@@ -145,7 +145,7 @@ func testBasicDeployment(t *testing.T) {
 	}
 
 	// Deploy container
-	containerID, err := deploy.DeployContainer(testRunner.Connection, opts)
+	containerID, err := deploy.Container(testRunner.Connection, opts)
 	if err != nil {
 		t.Fatalf("Failed to deploy container: %v", err)
 	}

@@ -67,7 +67,7 @@ func runContainer(cmd *cobra.Command, args []string) error {
 	}
 
 	// Deploy container
-	containerID, err := deploy.DeployContainer(conn, opts)
+	containerID, err := deploy.Container(conn, opts)
 	if err != nil {
 		return fmt.Errorf("deployment failed: %w", err)
 	}

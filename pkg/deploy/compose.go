@@ -44,8 +44,8 @@ type ComposeOptions struct {
 	EnvFile     string
 }
 
-// DeployCompose deploys a docker-compose file to the Synology NAS
-func DeployCompose(conn *synology.Connection, opts *ComposeOptions) error {
+// Compose deploys a docker-compose file to the Synology NAS
+func Compose(conn *synology.Connection, opts *ComposeOptions) error {
 	// Read and parse compose file
 	composeData, err := parseComposeFile(opts.ComposeFile)
 	if err != nil {
@@ -76,7 +76,7 @@ func DeployCompose(conn *synology.Connection, opts *ComposeOptions) error {
 		}
 
 		// Deploy container
-		_, err = DeployContainer(conn, containerOpts)
+		_, err = Container(conn, containerOpts)
 		if err != nil {
 			return errors.Wrapf(err, "failed to deploy service %s", serviceName)
 		}

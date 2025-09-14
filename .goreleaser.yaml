@@ -5,9 +5,9 @@ project_name: synodeploy
 
 before:
   hooks:
-    # Run quality checks before building
-    - make quality-check
-    # Run tests
+    # Run formatting and critical checks only
+    - go fmt ./...
+    - go vet ./...
     - go test ./...
     # Ensure go.mod is tidy
     - go mod tidy

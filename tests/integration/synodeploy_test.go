@@ -90,7 +90,7 @@ func TestSynoDeployEndToEnd(t *testing.T) {
 		}
 
 		// Deploy container
-		containerID, err := deploy.DeployContainer(conn, opts)
+		containerID, err := deploy.Container(conn, opts)
 		if err != nil {
 			t.Fatalf("Failed to deploy container: %v", err)
 		}
@@ -160,7 +160,7 @@ func TestSynoDeployEndToEnd(t *testing.T) {
 		}
 
 		// Deploy
-		containerID, err := deploy.DeployContainer(conn, opts)
+		containerID, err := deploy.Container(conn, opts)
 		if err != nil {
 			t.Fatalf("Failed to deploy container: %v", err)
 		}
@@ -212,7 +212,7 @@ func TestSynoDeployEndToEnd(t *testing.T) {
 			NetworkMode: "bridge",
 		}
 
-		_, err := deploy.DeployContainer(conn, opts)
+		_, err := deploy.Container(conn, opts)
 		if err == nil {
 			t.Error("Expected deployment to fail with non-existent image")
 			// Cleanup if it somehow succeeded

@@ -62,7 +62,7 @@ func deployCompose(cmd *cobra.Command, args []string) error {
 	}
 
 	// Deploy compose
-	if err := deploy.DeployCompose(conn, opts); err != nil {
+	if err := deploy.Compose(conn, opts); err != nil {
 		return fmt.Errorf("deployment failed: %w", err)
 	}
 
