@@ -132,32 +132,19 @@ brews:
       output = shell_output("#{bin}/synodeploy init --help")
       assert_match "Setup connection to Synology NAS", output
 
-# Linux packages
-nfpms:
-  - id: synodeploy
-    package_name: synodeploy
-    vendor: Scott Friedman
-    homepage: https://github.com/scttfrdmn/synodeploy
-    maintainer: Scott Friedman <scott@friedman.dev>
-    description: Deploy containers to Synology DSM 7.2+ with ease
-    license: MIT
-    formats:
-      - deb
-      - rpm
-      - apk
-    bindir: /usr/bin
-    section: utils
-    priority: optional
-    meta: false
-    contents:
-      - src: ./README.md
-        dst: /usr/share/doc/synodeploy/README.md
-      - src: ./LICENSE
-        dst: /usr/share/doc/synodeploy/LICENSE
-      - src: ./CHANGELOG.md
-        dst: /usr/share/doc/synodeploy/CHANGELOG.md
-    scripts:
-      postinstall: "echo 'SynoDeploy installed successfully!' && echo 'Run synodeploy init <your-nas-ip> to get started.'"
+# Linux packages (disabled for initial release - focus on Homebrew)
+# nfpms:
+#   - id: synodeploy
+#     package_name: synodeploy
+#     vendor: Scott Friedman
+#     homepage: https://github.com/scttfrdmn/synodeploy
+#     maintainer: Scott Friedman <scott@friedman.dev>
+#     description: Deploy containers to Synology DSM 7.2+ with ease
+#     license: MIT
+#     formats:
+#       - deb
+#       - rpm
+#       - apk
 
 # Docker image (optional)
 dockers:
