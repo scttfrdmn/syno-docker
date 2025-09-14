@@ -1,4 +1,4 @@
-# Dockerfile for SynoDeploy
+# Dockerfile for syno-docker
 # Copyright 2025 Scott Friedman
 
 FROM scratch
@@ -7,10 +7,10 @@ FROM scratch
 COPY --from=alpine:latest /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 # Copy the binary
-COPY synodeploy /usr/local/bin/synodeploy
+COPY syno-docker /usr/local/bin/syno-docker
 
 # Create non-root user
 USER 1000:1000
 
 # Set entrypoint
-ENTRYPOINT ["/usr/local/bin/synodeploy"]
+ENTRYPOINT ["/usr/local/bin/syno-docker"]
