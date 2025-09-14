@@ -215,11 +215,9 @@ release:
 
     ```bash
     # Install via Homebrew
-    brew install scttfrdmn/tap/synodeploy
+    brew install scttfrdmn/synodeploy/synodeploy
 
-    # Or download binary directly
-    curl -L https://github.com/scttfrdmn/synodeploy/releases/download/{{.Tag}}/synodeploy-{{.Os}}-{{.Arch}}.tar.gz | tar xz
-    sudo mv synodeploy /usr/local/bin/
+    # Or download binary directly from releases below
     ```
 
     ### Getting Started
