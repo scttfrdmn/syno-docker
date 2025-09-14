@@ -157,9 +157,7 @@ nfpms:
       - src: ./CHANGELOG.md
         dst: /usr/share/doc/synodeploy/CHANGELOG.md
     scripts:
-      postinstall: |
-        echo "SynoDeploy installed successfully!"
-        echo "Run 'synodeploy init <your-nas-ip>' to get started."
+      postinstall: "echo 'SynoDeploy installed successfully!' && echo 'Run synodeploy init <your-nas-ip> to get started.'"
 
 # Docker image (optional)
 dockers:
