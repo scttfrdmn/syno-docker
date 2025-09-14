@@ -92,19 +92,53 @@ make dev-install
 
 This creates a symlink in `/usr/local/bin/synodeploy` pointing to your development build.
 
+## SSH Setup
+
+SynoDeploy requires SSH access to your Synology NAS. It supports both ssh-agent and SSH key files.
+
+### SSH Agent (Recommended)
+
+If you use ssh-agent (most modern development environments):
+
+```bash
+# Verify ssh-agent is running and has keys
+ssh-add -l
+
+# Test connection to your NAS
+ssh your-username@your-nas-hostname
+
+# SynoDeploy will automatically use ssh-agent
+synodeploy init your-nas-hostname --user your-username
+```
+
+### SSH Key Files
+
+If you prefer using SSH key files directly:
+
+```bash
+# Generate SSH key if needed
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+
+# Copy public key to NAS
+ssh-copy-id your-username@your-nas-hostname
+
+# Specify key path in SynoDeploy
+synodeploy init your-nas-hostname --user your-username --key ~/.ssh/id_rsa
+```
+
 ## Verification
 
 After installation, verify SynoDeploy is working correctly:
 
 ```bash
 # Check version
-synodeploy version
+synodeploy --version
 
 # View help
 synodeploy --help
 
-# Check if all dependencies are available
-synodeploy init --help
+# Initialize connection to your NAS
+synodeploy init your-nas-hostname --user your-username
 ```
 
 ## System Requirements

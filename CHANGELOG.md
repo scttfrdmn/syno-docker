@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-09-14
+
+### Fixed
+- **SSH Agent Support**: Added automatic detection and support for ssh-agent authentication
+- **Administrator User Support**: Fixed compatibility with custom admin usernames (not just 'admin')
+- **Docker Command Execution**: Fixed Docker ps command formatting and parsing issues
+- **Container Listing**: Resolved container status parsing for proper ps command output
+- **Connection Reliability**: Improved SSH connection handling with proper fallback mechanisms
+
+### Added
+- **Integration Test Suite**: Comprehensive end-to-end testing on real Synology hardware
+- **Real Hardware Validation**: Verified working on DSM 7.2+ with Container Manager
+- **Connection Testing**: Automated tests for SSH, Docker, and Container Manager connectivity
+- **Error Handling Tests**: Validation of failure scenarios and error messages
+- **Volume Access Testing**: File system permission and path validation tests
+
+### Changed
+- **Docker Client Architecture**: Simplified to use SSH commands instead of complex client tunneling
+- **Authentication Priority**: ssh-agent takes precedence over SSH key files when available
+- **Test Coverage**: Expanded from unit tests to include comprehensive integration testing
+
+### Security
+- **Authentication Methods**: Enhanced support for both SSH key files and ssh-agent
+- **Permission Validation**: Improved volume path and file system access checks
+
 ## [0.1.0] - 2025-09-14
 
 ### Added

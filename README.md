@@ -2,20 +2,26 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/scttfrdmn/synodeploy)](https://goreportcard.com/report/github.com/scttfrdmn/synodeploy)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v0.1.0-blue.svg)](https://github.com/scttfrdmn/synodeploy/releases/tag/v0.1.0)
+[![Release](https://img.shields.io/badge/release-v0.1.1-blue.svg)](https://github.com/scttfrdmn/synodeploy/releases/tag/v0.1.1)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
+[![Integration Tests](https://img.shields.io/badge/integration%20tests-passing-brightgreen.svg)](#integration-tests)
 
 **SynoDeploy** is a CLI tool that simplifies Docker container deployment to Synology NAS devices running DSM 7.2+. It handles SSH connection management, Docker client setup, and path resolution issues specific to Synology Container Manager.
+
+**✅ Verified Working** on real Synology hardware with comprehensive integration testing.
 
 ## Features
 
 - 🚀 **One-command deployment** - Deploy containers as easily as `synodeploy run nginx`
-- 🔐 **SSH key authentication** - Secure connection using your existing SSH keys
+- 🔐 **SSH key & ssh-agent support** - Works with both SSH key files and ssh-agent
+- 👤 **Administrator user support** - Compatible with both `admin` and custom admin users
 - 📦 **docker-compose support** - Deploy complex multi-container applications
 - 🎯 **DSM 7.2+ optimized** - Built specifically for Container Manager
 - 🔧 **PATH resolution** - Automatically handles Docker binary location issues
 - 📂 **Volume path helpers** - Smart handling of Synology volume paths
 - 🔄 **Container lifecycle** - Deploy, list, and remove containers easily
 - ⚡ **Single binary** - No dependencies, just download and use
+- 🧪 **Integration tested** - Verified on real Synology hardware
 
 ## Quick Start
 
@@ -36,11 +42,18 @@ sudo mv synodeploy /usr/local/bin/
 ```bash
 # One-time setup - connect to your Synology NAS
 synodeploy init 192.168.1.100
+
+# Or with custom admin username (if not using 'admin')
+synodeploy init your-nas.local --user your-username
+
+# For ssh-agent users (automatically detected)
+synodeploy init your-nas.local --user your-username
 ```
 
 This will:
-- Test SSH connection to your NAS
+- Test SSH connection to your NAS (supports both SSH keys and ssh-agent)
 - Verify Container Manager is running
+- Test Docker command execution
 - Save connection details to `~/.synodeploy/config.yaml`
 
 ### Deploy Your First Container
@@ -174,12 +187,13 @@ synodeploy run nginx -v web:/usr/share/nginx/html    # Expands to /volume1/docke
 ### Synology NAS
 - DSM 7.2 or later
 - Container Manager installed and running
-- SSH access enabled
-- User with administrator privileges
+- SSH access enabled (Control Panel → Terminal & SNMP)
+- User with administrator privileges and docker group membership
 
 ### Local Machine
-- SSH key pair configured
+- SSH key pair configured OR ssh-agent running
 - Network access to your NAS
+- Go 1.21+ (for building from source)
 
 ## Troubleshooting
 
@@ -227,10 +241,37 @@ make build
 ### Running Tests
 
 ```bash
-make test              # Run tests
+make test              # Run unit tests
 make quality-check     # Run all quality checks
 make coverage         # Generate coverage report
 ```
+
+### Integration Tests
+
+SynoDeploy includes comprehensive integration tests that validate functionality against real Synology hardware:
+
+```bash
+# Test connection to your NAS
+go test -v -run TestConnectionToChubChub ./tests/integration/
+
+# Test Docker commands via SSH
+go test -v -run TestDirectDockerCommands ./tests/integration/
+
+# Full end-to-end testing
+go test -v -run TestSynoDeployEndToEnd ./tests/integration/
+
+# All integration tests
+go test -v ./tests/integration/
+```
+
+**Integration test coverage:**
+- ✅ SSH connectivity and authentication (ssh-agent + key file)
+- ✅ Docker command execution over SSH
+- ✅ Container deployment, lifecycle, and removal
+- ✅ HTTP endpoint validation for deployed services
+- ✅ Volume mounting and file system access
+- ✅ Error handling for invalid configurations
+- ✅ Container Manager service status validation
 
 ### Quality Checks
 

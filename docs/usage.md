@@ -30,15 +30,22 @@ Before using SynoDeploy, ensure your NAS is properly configured:
 ### 2. Initialize SynoDeploy
 
 ```bash
-# Basic initialization
+# Basic initialization (uses ssh-agent if available)
 synodeploy init 192.168.1.100
 
-# With custom settings
-synodeploy init 192.168.1.100 \
-  --user admin \
+# With custom admin username
+synodeploy init your-nas.local --user your-username
+
+# With all custom settings
+synodeploy init your-nas.local \
+  --user your-username \
   --port 22 \
   --key ~/.ssh/id_rsa \
   --volume-path /volume1/docker
+
+# Examples for different setups
+synodeploy init chubchub.local --user scttfrdmn    # Custom admin user
+synodeploy init 192.168.1.100 --user admin        # Standard admin user
 ```
 
 This command will:
@@ -371,12 +378,26 @@ synodeploy run node:16-alpine \
 ## Troubleshooting
 
 ### Connection Issues
+
+**SSH Authentication:**
 ```bash
 # Test SSH connection manually
-ssh admin@your-nas-ip
+ssh your-username@your-nas-ip
 
+# If using ssh-agent, verify keys are loaded
+ssh-add -l
+
+# If using key files, test specific key
+ssh -i ~/.ssh/id_rsa your-username@your-nas-ip
+```
+
+**Container Manager:**
+```bash
 # Verify Container Manager is running
-ssh admin@your-nas-ip 'systemctl status pkg-ContainerManager-dockerd'
+ssh your-username@your-nas-ip 'systemctl status pkg-ContainerManager-dockerd'
+
+# Test Docker access
+ssh your-username@your-nas-ip '/usr/local/bin/docker version'
 ```
 
 ### Container Won't Start
