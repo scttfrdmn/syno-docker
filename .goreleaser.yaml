@@ -99,6 +99,7 @@ brews:
       owner: scttfrdmn
       name: homebrew-synodeploy
       branch: main
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     # URL template for downloading the archive
     url_template: "https://github.com/scttfrdmn/synodeploy/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     # Git author used to commit to the repository
