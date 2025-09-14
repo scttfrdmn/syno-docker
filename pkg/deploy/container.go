@@ -186,7 +186,7 @@ func GetDockerClient() (*client.Client, error) {
 	return nil, fmt.Errorf("docker client not needed in simple implementation")
 }
 
-// TestConnection tests Docker availability over SSH
+// TestDockerConnection tests Docker availability over SSH
 func TestDockerConnection(conn *synology.Connection) error {
 	// Test Docker command
 	if _, err := conn.ExecuteDockerCommand([]string{"version", "--format", "'{{.Server.Version}}'"}); err != nil {

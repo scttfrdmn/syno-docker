@@ -12,6 +12,7 @@ import (
 	"github.com/scttfrdmn/synodeploy/pkg/synology"
 )
 
+// ComposeService represents a service in a docker-compose file
 type ComposeService struct {
 	Image       string            `yaml:"image,omitempty"`
 	Build       interface{}       `yaml:"build,omitempty"`
@@ -28,6 +29,7 @@ type ComposeService struct {
 	Labels      map[string]string `yaml:"labels,omitempty"`
 }
 
+// ComposeFile represents a complete docker-compose file structure
 type ComposeFile struct {
 	Version  string                    `yaml:"version,omitempty"`
 	Services map[string]ComposeService `yaml:"services"`
@@ -35,12 +37,14 @@ type ComposeFile struct {
 	Volumes  map[string]interface{}    `yaml:"volumes,omitempty"`
 }
 
+// ComposeOptions represents options for deploying a compose file
 type ComposeOptions struct {
 	ComposeFile string
 	ProjectName string
 	EnvFile     string
 }
 
+// DeployCompose deploys a docker-compose file to the Synology NAS
 func DeployCompose(conn *synology.Connection, opts *ComposeOptions) error {
 	// Read and parse compose file
 	composeData, err := parseComposeFile(opts.ComposeFile)
@@ -232,6 +236,7 @@ func expandEnvVar(value string, envVars map[string]string) string {
 	return result
 }
 
+// GenerateProjectName generates a project name from a compose file path
 func GenerateProjectName(composePath string) string {
 	// Use directory name as project name
 	dir := filepath.Dir(composePath)

@@ -13,18 +13,21 @@ import (
 	"github.com/scttfrdmn/synodeploy/pkg/config"
 )
 
+// Connection represents a connection to a Synology NAS
 type Connection struct {
 	config    *config.Config
 	sshClient *ssh.Client
 	dockerAPI *client.Client
 }
 
+// NewConnection creates a new connection with the given configuration
 func NewConnection(cfg *config.Config) *Connection {
 	return &Connection{
 		config: cfg,
 	}
 }
 
+// Connect establishes the SSH connection to the Synology NAS
 func (c *Connection) Connect() error {
 	if err := c.connectSSH(); err != nil {
 		return errors.Wrap(err, "failed to establish SSH connection")
@@ -82,6 +85,7 @@ func (c *Connection) connectSSHWithKeyFile() error {
 	return nil
 }
 
+// Close closes the connection and cleans up resources
 func (c *Connection) Close() error {
 	var errs []string
 
@@ -104,6 +108,7 @@ func (c *Connection) Close() error {
 	return nil
 }
 
+// ExecuteCommand executes a command over SSH and returns the output
 func (c *Connection) ExecuteCommand(cmd string) (string, error) {
 	if c.sshClient == nil {
 		return "", fmt.Errorf("SSH client not connected")
@@ -126,17 +131,20 @@ func (c *Connection) ExecuteCommand(cmd string) (string, error) {
 	return string(output), nil
 }
 
+// ExecuteDockerCommand executes a Docker command with full path
 func (c *Connection) ExecuteDockerCommand(args []string) (string, error) {
 	// Always use full path to Docker binary
 	cmd := DockerBinary + " " + strings.Join(args, " ")
 	return c.ExecuteCommand(cmd)
 }
 
+// GetDockerClient returns the Docker client (nil in v0.1.x)
 func (c *Connection) GetDockerClient() *client.Client {
 	// In v0.1.0, we don't use the Docker client API, just SSH commands
 	return nil
 }
 
+// TestConnection tests SSH and Docker connectivity
 func (c *Connection) TestConnection() error {
 	// Test SSH connection
 	if _, err := c.ExecuteCommand("echo 'SSH connection test'"); err != nil {
@@ -151,6 +159,7 @@ func (c *Connection) TestConnection() error {
 	return nil
 }
 
+// StreamCommand executes a command and streams output to writers
 func (c *Connection) StreamCommand(cmd string, stdout, stderr io.Writer) error {
 	if c.sshClient == nil {
 		return fmt.Errorf("SSH client not connected")

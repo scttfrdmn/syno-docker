@@ -9,14 +9,21 @@ import (
 )
 
 const (
+	// DefaultUser is the default SSH username
 	DefaultUser       = "admin"
+	// DefaultPort is the default SSH port
 	DefaultPort       = 22
+	// DefaultVolumePath is the default volume path on Synology
 	DefaultVolumePath = "/volume1/docker"
+	// DefaultNetwork is the default Docker network
 	DefaultNetwork    = "bridge"
+	// ConfigDir is the configuration directory name
 	ConfigDir         = ".synodeploy"
+	// ConfigFile is the configuration file name
 	ConfigFile        = "config.yaml"
 )
 
+// Config represents the SynoDeploy configuration
 type Config struct {
 	Host       string `yaml:"host"`
 	Port       int    `yaml:"port,omitempty"`
@@ -29,6 +36,7 @@ type Config struct {
 	} `yaml:"defaults"`
 }
 
+// New creates a new Config with default values
 func New() *Config {
 	return &Config{
 		Port: DefaultPort,
@@ -43,6 +51,7 @@ func New() *Config {
 	}
 }
 
+// Validate validates the configuration values
 func (c *Config) Validate() error {
 	if c.Host == "" {
 		return fmt.Errorf("host is required")
@@ -65,6 +74,7 @@ func (c *Config) Validate() error {
 	return nil
 }
 
+// GetConfigPath returns the path to the configuration file
 func GetConfigPath() (string, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
@@ -79,6 +89,7 @@ func GetConfigPath() (string, error) {
 	return filepath.Join(configDir, ConfigFile), nil
 }
 
+// Load loads the configuration from the config file
 func Load() (*Config, error) {
 	configPath, err := GetConfigPath()
 	if err != nil {
@@ -102,6 +113,7 @@ func Load() (*Config, error) {
 	return config, nil
 }
 
+// Save saves the configuration to the config file
 func (c *Config) Save() error {
 	configPath, err := GetConfigPath()
 	if err != nil {

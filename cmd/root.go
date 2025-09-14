@@ -10,9 +10,9 @@ var (
 	// Version is the current version of SynoDeploy
 	Version string
 	// Commit is the git commit hash
-	Commit  string
+	Commit string
 	// Date is the build date
-	Date    string
+	Date string
 )
 
 var rootCmd = &cobra.Command{

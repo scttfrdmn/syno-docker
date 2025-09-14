@@ -13,7 +13,7 @@ const (
 	// DefaultSSHKeyName is the default SSH key filename
 	DefaultSSHKeyName = "id_rsa"
 	// DefaultSSHPort is the default SSH port
-	DefaultSSHPort    = 22
+	DefaultSSHPort = 22
 )
 
 // FindSSHKey finds the first available SSH key in the user's .ssh directory

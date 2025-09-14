@@ -41,6 +41,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y bc
           make deps
+          # Add Go tools to PATH
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
 
       - name: Run tests
         run: make test
