@@ -151,13 +151,13 @@ integration-test:
 	@echo "Running integration tests..."
 	@if [ -z "$(NAS_HOST)" ]; then \
 		echo "Error: NAS_HOST environment variable is required"; \
-		echo "Usage: NAS_HOST=192.168.1.100 make integration-test"; \
+		echo "Usage: NAS_HOST=chubchub.local NAS_USER=scttfrdmn make integration-test"; \
 		exit 1; \
 	fi
 	go test -v -integration \
 		-nas-host=$(NAS_HOST) \
-		-nas-user=$(NAS_USER) \
-		-nas-key=$(NAS_SSH_KEY) \
+		$(if $(NAS_USER),-nas-user=$(NAS_USER),-nas-user=admin) \
+		$(if $(NAS_SSH_KEY),-nas-key=$(NAS_SSH_KEY)) \
 		-timeout=10m \
 		./tests/integration/...
 
@@ -165,8 +165,8 @@ integration-test-full: integration-test
 	@echo "Generating integration test coverage report..."
 	go test -integration -coverprofile=integration_coverage.out \
 		-nas-host=$(NAS_HOST) \
-		-nas-user=$(NAS_USER) \
-		-nas-key=$(NAS_SSH_KEY) \
+		$(if $(NAS_USER),-nas-user=$(NAS_USER),-nas-user=admin) \
+		$(if $(NAS_SSH_KEY),-nas-key=$(NAS_SSH_KEY)) \
 		./tests/integration/...
 	go tool cover -html=integration_coverage.out -o integration_coverage.html
 	@echo "Integration test coverage report: integration_coverage.html"

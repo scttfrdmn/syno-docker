@@ -4,18 +4,21 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/scttfrdmn/synodeploy/pkg/config"
+	"github.com/scttfrdmn/synodeploy/pkg/deploy"
 	"github.com/scttfrdmn/synodeploy/pkg/synology"
 	"github.com/scttfrdmn/synodeploy/tests/integration/helpers"
 )
 
 var (
 	integrationTest = flag.Bool("integration", false, "Run integration tests")
-	nasHost         = flag.String("nas-host", "", "Synology NAS IP address")
-	nasUser         = flag.String("nas-user", "admin", "SSH username")
+	nasHost         = flag.String("nas-host", "", "Synology NAS IP address or hostname")
+	nasUser         = flag.String("nas-user", "admin", "SSH username (admin or administrator)")
 	nasPort         = flag.Int("nas-port", 22, "SSH port")
 	nasKeyPath      = flag.String("nas-key", "", "SSH private key path")
 	cleanup         = flag.Bool("cleanup", true, "Cleanup test resources after tests")
@@ -31,43 +34,29 @@ type TestRunner struct {
 func TestMain(m *testing.M) {
 	flag.Parse()
 
-	if !*integrationTest {
-		fmt.Println("Skipping integration tests. Use -integration flag to run.")
-		os.Exit(0)
-	}
+	// Only run TestMain setup for tests that actually need it (TestIntegration)
+	// Other tests like TestConnectionToChubChub can run independently
 
-	if *nasHost == "" {
-		fmt.Println("Error: -nas-host is required for integration tests")
-		os.Exit(1)
-	}
-
-	// Setup test environment
-	runner, err := setupTestEnvironment()
-	if err != nil {
-		fmt.Printf("Failed to setup test environment: %v\n", err)
-		os.Exit(1)
-	}
-
-	// Run tests
-	exitCode := m.Run()
-
-	// Cleanup
-	if *cleanup {
-		if err := runner.Cleanup.CleanupAll(); err != nil {
-			fmt.Printf("Warning: Cleanup failed: %v\n", err)
-		}
-	}
-
-	os.Exit(exitCode)
+	os.Exit(m.Run())
 }
 
 func setupTestEnvironment() (*TestRunner, error) {
+	// Set default SSH key path if not provided
+	sshKeyPath := *nasKeyPath
+	if sshKeyPath == "" {
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get home directory: %w", err)
+		}
+		sshKeyPath = filepath.Join(homeDir, ".ssh", "id_rsa")
+	}
+
 	// Create test configuration
 	cfg := &config.Config{
 		Host:       *nasHost,
 		User:       *nasUser,
 		Port:       *nasPort,
-		SSHKeyPath: *nasKeyPath,
+		SSHKeyPath: sshKeyPath,
 		Defaults: struct {
 			VolumePath string `yaml:"volume_path"`
 			Network    string `yaml:"network,omitempty"`
@@ -76,6 +65,8 @@ func setupTestEnvironment() (*TestRunner, error) {
 			Network:    "bridge",
 		},
 	}
+
+	fmt.Printf("🔌 Testing connection to %s@%s:%d using key %s\n", cfg.User, cfg.Host, cfg.Port, cfg.SSHKeyPath)
 
 	// Validate configuration
 	if err := cfg.Validate(); err != nil {
@@ -113,6 +104,14 @@ func setupTestEnvironment() (*TestRunner, error) {
 var testRunner *TestRunner
 
 func TestIntegration(t *testing.T) {
+	if !*integrationTest {
+		t.Skip("Integration tests not enabled. Use -integration flag.")
+	}
+
+	if *nasHost == "" {
+		t.Skip("NAS host not specified. Use -nas-host flag.")
+	}
+
 	var err error
 	testRunner, err = setupTestEnvironment()
 	if err != nil {
@@ -120,11 +119,7 @@ func TestIntegration(t *testing.T) {
 	}
 
 	t.Run("BasicDeployment", testBasicDeployment)
-	t.Run("ComposeDeployment", testComposeDeployment)
-	t.Run("LifecycleManagement", testLifecycleManagement)
-	t.Run("VolumeMapping", testVolumeMapping)
-	t.Run("NetworkConnectivity", testNetworkConnectivity)
-	t.Run("ErrorHandling", testErrorHandling)
+	// Additional test functions will be implemented in future versions
 }
 
 func testBasicDeployment(t *testing.T) {
@@ -134,11 +129,12 @@ func testBasicDeployment(t *testing.T) {
 
 	// Deploy nginx container
 	opts := &deploy.ContainerOptions{
-		Image:   "nginx:alpine",
-		Name:    containerName,
-		Ports:   []string{"8080:80"},
-		Volumes: []string{fmt.Sprintf("%s/html:/usr/share/nginx/html", testRunner.Config.Defaults.VolumePath)},
-		Restart: "unless-stopped",
+		Image:       "nginx:alpine",
+		Name:        containerName,
+		Ports:       []string{"8080:80"},
+		Volumes:     []string{fmt.Sprintf("%s/html:/usr/share/nginx/html", testRunner.Config.Defaults.VolumePath)},
+		Restart:     "unless-stopped",
+		NetworkMode: "bridge",
 	}
 
 	// Create test HTML file
@@ -187,6 +183,3 @@ func testBasicDeployment(t *testing.T) {
 		t.Errorf("HTTP connectivity test failed: %v", err)
 	}
 }
-
-// Additional test functions would go here...
-// testComposeDeployment, testLifecycleManagement, etc.

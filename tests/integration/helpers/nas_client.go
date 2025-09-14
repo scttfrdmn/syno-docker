@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/scttfrdmn/synodeploy/pkg/deploy"
 	"github.com/scttfrdmn/synodeploy/pkg/synology"
 )
 

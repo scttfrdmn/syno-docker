@@ -114,7 +114,7 @@ func DeployContainer(conn *synology.Connection, opts *ContainerOptions) (string,
 
 // ListContainers lists containers using direct Docker commands
 func ListContainers(conn *synology.Connection, all bool) ([]ContainerInfo, error) {
-	args := []string{"ps", "--format", "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"}
+	args := []string{"ps", "--format", "'table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'"}
 	if all {
 		args = append(args, "-a")
 	}

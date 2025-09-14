@@ -243,7 +243,7 @@ func GenerateProjectName(composePath string) string {
 	projectName = strings.ReplaceAll(projectName, "_", "")
 	projectName = strings.ReplaceAll(projectName, "-", "")
 
-	if projectName == "" || projectName == "." {
+	if projectName == "" || projectName == "." || projectName == "/" {
 		projectName = "synodeploy"
 	}
 

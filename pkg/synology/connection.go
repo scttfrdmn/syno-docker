@@ -31,14 +31,26 @@ func (c *Connection) Connect() error {
 		return errors.Wrap(err, "failed to establish SSH connection")
 	}
 
-	if err := c.setupDockerClient(); err != nil {
-		return errors.Wrap(err, "failed to setup Docker client")
-	}
-
+	// For v0.1.0, we use SSH commands directly instead of Docker client
+	// This avoids the complex SSH tunneling setup and works reliably
 	return nil
 }
 
 func (c *Connection) connectSSH() error {
+	// Try ssh-agent first if available
+	if hasSSHAgent() {
+		if err := c.connectSSHWithAgent(); err == nil {
+			return nil // Success with agent
+		}
+		// If agent fails, fall back to key file
+		fmt.Printf("Warning: ssh-agent authentication failed, trying key file...\n")
+	}
+
+	// Fallback to key file authentication
+	return c.connectSSHWithKeyFile()
+}
+
+func (c *Connection) connectSSHWithKeyFile() error {
 	// Read SSH private key
 	keyBytes, err := os.ReadFile(c.config.SSHKeyPath)
 	if err != nil {
@@ -145,7 +157,8 @@ func (c *Connection) ExecuteDockerCommand(args []string) (string, error) {
 }
 
 func (c *Connection) GetDockerClient() *client.Client {
-	return c.dockerAPI
+	// In v0.1.0, we don't use the Docker client API, just SSH commands
+	return nil
 }
 
 func (c *Connection) TestConnection() error {

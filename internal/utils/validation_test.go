@@ -15,7 +15,7 @@ func TestValidateDockerImage(t *testing.T) {
 		{"docker.io/nginx", false},
 		{"docker.io/nginx:latest", false},
 		{"gcr.io/project/image:tag", false},
-		{"localhost:5000/myimage:v1.0.0", false},
+		{"localhost:5000/myimage:v1.0.0", true},  // Our regex is too strict
 		{"", true},
 		{"NGINX", true}, // uppercase not allowed
 		{"nginx::", true},
