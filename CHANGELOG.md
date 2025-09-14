@@ -7,16 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - 2025-09-14
+## [0.1.7] - 2025-09-14
 
-### Added
+### Changed
 - **Project Rename**: Comprehensive rename from synodeploy to syno-docker
-- **New Repository**: Migrated to github.com/scttfrdmn/syno-docker
-- **Updated Binary**: CLI tool now named `syno-docker`
-- **Configuration**: Now uses `~/.syno-docker/config.yaml`
-- **Homebrew Tap**: New tap at scttfrdmn/homebrew-syno-docker
+- **Binary Name**: CLI tool now named `syno-docker` (was `synodeploy`)
+- **Configuration**: Now uses `~/.syno-docker/config.yaml` (was `~/.synodeploy/`)
+- **Homebrew Tap**: Updated to scttfrdmn/homebrew-syno-docker
+- **Documentation**: Updated all references and examples
 
-### Features (carried over from synodeploy)
+### Features (maintained from previous versions)
 - **Go Report Card A+**: Perfect compliance with all quality tools
 - **SSH-agent Support**: Full compatibility with ssh-agent authentication
 - **Administrator Users**: Support for custom admin usernames
@@ -25,9 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Integration Tested**: Verified on real Synology hardware (chubchub.local)
 - **Cross-platform**: macOS Intel/ARM, Linux AMD64/ARM64
 
-## Previous Releases (as synodeploy)
-
-## [0.1.6] - 2025-09-14 (synodeploy)
+## [0.1.6] - 2025-09-14
 
 ### Added
 - **Linux Package Distribution**: Re-enabled deb, rpm, apk packages for complete coverage
