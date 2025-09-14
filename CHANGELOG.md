@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2025-09-14
+
+### Fixed
+- **Golint Compliance**: Fixed function naming to eliminate stuttering warnings
+- **Go Report Card A+**: Achieved perfect compliance with all quality tools
+- **Function Names**: Renamed `DeployContainer` to `Container` and `DeployCompose` to `Compose`
+
+### Quality
+- **gofmt**: ✅ Perfect code formatting
+- **govet**: ✅ Static analysis clean
+- **golint**: ✅ Zero warnings or suggestions
+- **staticcheck**: ✅ Advanced analysis passing
+- **ineffassign**: ✅ No ineffectual assignments
+- **misspell**: ✅ No spelling errors
+- **gocyclo**: ✅ Complexity under 15 for all production code
+
 ## [0.1.3] - 2025-09-14
 
 ### Fixed
