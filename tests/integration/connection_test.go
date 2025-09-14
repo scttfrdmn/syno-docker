@@ -11,7 +11,10 @@ import (
 
 // TestConnectionToChubChub tests direct connection to your local Synology system
 func TestConnectionToChubChub(t *testing.T) {
-	// This test can run independently without the TestMain setup
+	// Skip in CI environments (GitHub Actions can't reach local networks)
+	if os.Getenv("CI") != "" || os.Getenv("GITHUB_ACTIONS") != "" {
+		t.Skip("Skipping local network test in CI environment")
+	}
 	// Test hostname resolution
 	t.Run("HostnameResolution", func(t *testing.T) {
 		cmd := exec.Command("ping", "-c", "1", "chubchub.local")
@@ -133,7 +136,10 @@ func TestConnectionToChubChub(t *testing.T) {
 
 // TestDirectDockerCommands tests Docker commands directly via SSH
 func TestDirectDockerCommands(t *testing.T) {
-	// This test can run independently without flags
+	// Skip in CI environments
+	if os.Getenv("CI") != "" || os.Getenv("GITHUB_ACTIONS") != "" {
+		t.Skip("Skipping local network test in CI environment")
+	}
 
 	// Test Docker info command
 	t.Run("DockerInfo", func(t *testing.T) {

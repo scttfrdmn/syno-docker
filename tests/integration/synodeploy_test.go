@@ -16,6 +16,10 @@ import (
 
 // TestSynoDeployEndToEnd tests the complete SynoDeploy workflow
 func TestSynoDeployEndToEnd(t *testing.T) {
+	// Skip in CI environments
+	if os.Getenv("CI") != "" || os.Getenv("GITHUB_ACTIONS") != "" {
+		t.Skip("Skipping local network test in CI environment")
+	}
 	// Setup configuration for chubchub.local
 	homeDir, _ := os.UserHomeDir()
 	sshKeyPath := filepath.Join(homeDir, ".ssh", "id_rsa")
