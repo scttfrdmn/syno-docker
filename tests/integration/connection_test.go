@@ -101,7 +101,7 @@ func TestConnectionToChubChub(t *testing.T) {
 
 	// Test volume path access
 	t.Run("VolumePathAccess", func(t *testing.T) {
-		testPath := "/volume1/docker/synodeploy-test"
+		testPath := "/volume1/docker/syno-docker-test"
 
 		// Create test directory
 		cmd := exec.Command("ssh", "scttfrdmn@chubchub.local", fmt.Sprintf("mkdir -p %s && echo 'Directory created successfully'", testPath))
@@ -176,7 +176,7 @@ func TestDirectDockerCommands(t *testing.T) {
 
 	// Test container run (quick test)
 	t.Run("ContainerRun", func(t *testing.T) {
-		containerName := fmt.Sprintf("synodeploy-test-%d", os.Getpid())
+		containerName := fmt.Sprintf("syno-docker-test-%d", os.Getpid())
 
 		// Cleanup any existing container with same name
 		cleanupCmd := exec.Command("ssh", "scttfrdmn@chubchub.local",

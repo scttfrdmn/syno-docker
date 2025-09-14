@@ -6,9 +6,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/scttfrdmn/synodeploy/pkg/config"
-	"github.com/scttfrdmn/synodeploy/pkg/deploy"
-	"github.com/scttfrdmn/synodeploy/pkg/synology"
+	"github.com/scttfrdmn/syno-docker/pkg/config"
+	"github.com/scttfrdmn/syno-docker/pkg/deploy"
+	"github.com/scttfrdmn/syno-docker/pkg/synology"
 )
 
 var (
@@ -66,7 +66,7 @@ func deployCompose(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("deployment failed: %w", err)
 	}
 
-	fmt.Printf("\nYou can check the status with: synodeploy ps\n")
+	fmt.Printf("\nYou can check the status with: syno-docker ps\n")
 	return nil
 }
 

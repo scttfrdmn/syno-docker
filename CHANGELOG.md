@@ -7,7 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.6] - 2025-09-14
+## [0.1.0] - 2025-09-14
+
+### Added
+- **Project Rename**: Comprehensive rename from synodeploy to syno-docker
+- **New Repository**: Migrated to github.com/scttfrdmn/syno-docker
+- **Updated Binary**: CLI tool now named `syno-docker`
+- **Configuration**: Now uses `~/.syno-docker/config.yaml`
+- **Homebrew Tap**: New tap at scttfrdmn/homebrew-syno-docker
+
+### Features (carried over from synodeploy)
+- **Go Report Card A+**: Perfect compliance with all quality tools
+- **SSH-agent Support**: Full compatibility with ssh-agent authentication
+- **Administrator Users**: Support for custom admin usernames
+- **Container Operations**: Deploy, list, remove containers
+- **Docker Compose**: Multi-container deployment support
+- **Integration Tested**: Verified on real Synology hardware (chubchub.local)
+- **Cross-platform**: macOS Intel/ARM, Linux AMD64/ARM64
+
+## Previous Releases (as synodeploy)
+
+## [0.1.6] - 2025-09-14 (synodeploy)
 
 ### Added
 - **Linux Package Distribution**: Re-enabled deb, rpm, apk packages for complete coverage
@@ -20,12 +40,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.5] - 2025-09-14
 
 ### Added
-- **Homebrew Formula**: Successfully auto-generated Formula/synodeploy.rb
+- **Homebrew Formula**: Successfully auto-generated Formula/syno-docker.rb
 - **Cross-platform Distribution**: macOS Intel/ARM, Linux AMD64/ARM64
 - **Shell Completions**: bash, zsh, fish completion support
 
 ### Fixed
-- **GitHub Token Access**: Fixed permissions for homebrew-synodeploy repository
+- **GitHub Token Access**: Fixed permissions for homebrew-syno-docker repository
 
 ## [0.1.4] - 2025-09-14
 
@@ -92,10 +112,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **Core CLI Framework**: Complete command-line interface with `init`, `run`, `deploy`, `ps`, `rm` commands
 - **SSH Connection Management**: Secure SSH key authentication with automatic Docker binary path resolution
-- **Container Deployment**: Single container deployment with `synodeploy run` supporting ports, volumes, environment variables
-- **Docker Compose Support**: Multi-container deployment with `synodeploy deploy` for compose files
-- **Container Management**: List containers with `synodeploy ps` and remove with `synodeploy rm`
-- **Configuration System**: Persistent configuration in `~/.synodeploy/config.yaml` with validation
+- **Container Deployment**: Single container deployment with `syno-docker run` supporting ports, volumes, environment variables
+- **Docker Compose Support**: Multi-container deployment with `syno-docker deploy` for compose files
+- **Container Management**: List containers with `syno-docker ps` and remove with `syno-docker rm`
+- **Configuration System**: Persistent configuration in `~/.syno-docker/config.yaml` with validation
 - **DSM 7.2+ Optimization**: Built specifically for Container Manager with known constants and paths
 - **Volume Path Helpers**: Smart volume path handling with Synology volume validation
 - **Environment Variable Expansion**: Support for ${VAR} substitution in compose files

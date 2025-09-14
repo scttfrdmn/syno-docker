@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	// Version is the current version of SynoDeploy
+	// Version is the current version of syno-docker
 	Version string
 	// Commit is the git commit hash
 	Commit string
@@ -16,9 +16,9 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "synodeploy",
+	Use:   "syno-docker",
 	Short: "Deploy containers to Synology DSM 7.2+",
-	Long: `SynoDeploy is a CLI tool that simplifies Docker container deployment
+	Long: `syno-docker is a CLI tool that simplifies Docker container deployment
 to Synology NAS devices running DSM 7.2+. It handles SSH connection management,
 Docker client setup, and path resolution issues specific to Synology Container Manager.`,
 	Version: getVersion(),

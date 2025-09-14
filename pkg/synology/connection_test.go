@@ -3,7 +3,7 @@ package synology
 import (
 	"testing"
 
-	"github.com/scttfrdmn/synodeploy/pkg/config"
+	"github.com/scttfrdmn/syno-docker/pkg/config"
 )
 
 func TestNewConnection(t *testing.T) {

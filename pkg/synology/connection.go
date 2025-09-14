@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/ssh"
 
-	"github.com/scttfrdmn/synodeploy/pkg/config"
+	"github.com/scttfrdmn/syno-docker/pkg/config"
 )
 
 // Connection represents a connection to a Synology NAS

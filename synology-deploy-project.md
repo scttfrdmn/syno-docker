@@ -1,4 +1,4 @@
-# SynoDeploy: Simple Container Deployment for Synology DSM 7.2+
+# syno-docker: Simple Container Deployment for Synology DSM 7.2+
 
 ## Project Overview
 
@@ -6,14 +6,14 @@ A **single Go binary** that makes deploying containers to Synology DSM 7.2+ as s
 
 ```bash
 # Install
-brew install synodeploy
+brew install syno-docker
 
 # One-time setup 
-synodeploy init 192.168.1.100
+syno-docker init 192.168.1.100
 
 # Deploy anything
-synodeploy run nginx:latest -p 8080:80 -v /volume1/web:/usr/share/nginx/html
-synodeploy deploy docker-compose.yml
+syno-docker run nginx:latest -p 8080:80 -v /volume1/web:/usr/share/nginx/html
+syno-docker deploy docker-compose.yml
 ```
 
 ## Why Go is Perfect for This
@@ -29,7 +29,7 @@ synodeploy deploy docker-compose.yml
 ### Distribution Benefits
 ```bash
 # Users get a single command installation
-brew install synodeploy
+brew install syno-docker
 
 # Behind the scenes: static binary, no dependencies
 # Works immediately without Python, Node, or other runtimes
@@ -58,7 +58,7 @@ brew install synodeploy
 ```go
 // cmd/root.go
 var rootCmd = &cobra.Command{
-    Use:   "synodeploy",
+    Use:   "syno-docker",
     Short: "Deploy containers to Synology DSM 7.2+",
 }
 
@@ -121,7 +121,7 @@ type Config struct {
     } `yaml:"default"`
 }
 
-// Stored in ~/.synodeploy/config.yaml
+// Stored in ~/.syno-docker/config.yaml
 ```
 
 ### 4. Container Deployment
@@ -145,13 +145,13 @@ func (cd *ContainerDeploy) Deploy(conn *synology.Connection) error {
 ## Project Structure (Minimal)
 
 ```
-synodeploy/
+syno-docker/
 ├── main.go                   # Entry point
 ├── cmd/
 │   ├── root.go              # Root command setup
-│   ├── init.go              # synodeploy init
-│   ├── run.go               # synodeploy run  
-│   └── deploy.go            # synodeploy deploy
+│   ├── init.go              # syno-docker init
+│   ├── run.go               # syno-docker run  
+│   └── deploy.go            # syno-docker deploy
 ├── pkg/
 │   ├── synology/
 │   │   ├── connection.go    # SSH + Docker client
@@ -170,7 +170,7 @@ synodeploy/
 ## Key Dependencies
 ```go
 // go.mod
-module github.com/username/synodeploy
+module github.com/username/syno-docker
 
 require (
     github.com/spf13/cobra v1.8.0          // CLI framework
@@ -191,12 +191,12 @@ builds:
     goarch: [amd64, arm64]
 
 brews:
-  - name: synodeploy
-    homepage: https://github.com/username/synodeploy
+  - name: syno-docker
+    homepage: https://github.com/username/syno-docker
     description: "Deploy containers to Synology DSM 7.2+"
     repository:
       owner: username
-      name: homebrew-synodeploy
+      name: homebrew-syno-docker
 ```
 
 ### 2. Release Process
@@ -210,11 +210,11 @@ git push --tags
 ### 3. User Experience
 ```bash
 # Installation
-brew install username/synodeploy/synodeploy
+brew install username/syno-docker/syno-docker
 
 # Usage
-synodeploy init 192.168.1.100
-synodeploy run portainer/portainer-ce:latest -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock
+syno-docker init 192.168.1.100
+syno-docker run portainer/portainer-ce:latest -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock
 ```
 
 ## Implementation Strategy
@@ -222,7 +222,7 @@ synodeploy run portainer/portainer-ce:latest -p 9000:9000 -v /var/run/docker.soc
 ### Phase 1: Core Functionality (2-4 weeks)
 - [ ] SSH connection with key authentication
 - [ ] Docker client over SSH with PATH fixes
-- [ ] Basic `synodeploy run` command
+- [ ] Basic `syno-docker run` command
 - [ ] Configuration management
 - [ ] Homebrew formula
 
@@ -240,7 +240,7 @@ synodeploy run portainer/portainer-ce:latest -p 9000:9000 -v /var/run/docker.soc
 
 ## Success Metrics
 
-- **Installation friction:** `brew install synodeploy` → working deployment in under 5 minutes
+- **Installation friction:** `brew install syno-docker` → working deployment in under 5 minutes
 - **Binary size:** < 20MB static binary
 - **Startup time:** < 100ms for most commands
 - **Memory usage:** < 10MB during operation

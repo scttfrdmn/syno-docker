@@ -1,4 +1,4 @@
-# GitHub Actions workflow for releasing SynoDeploy
+# GitHub Actions workflow for releasing syno-docker
 # Copyright 2025 Scott Friedman
 
 name: Release

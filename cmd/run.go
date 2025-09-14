@@ -6,9 +6,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/scttfrdmn/synodeploy/pkg/config"
-	"github.com/scttfrdmn/synodeploy/pkg/deploy"
-	"github.com/scttfrdmn/synodeploy/pkg/synology"
+	"github.com/scttfrdmn/syno-docker/pkg/config"
+	"github.com/scttfrdmn/syno-docker/pkg/deploy"
+	"github.com/scttfrdmn/syno-docker/pkg/synology"
 )
 
 var (
@@ -75,7 +75,7 @@ func runContainer(cmd *cobra.Command, args []string) error {
 	fmt.Printf("✅ Container deployed successfully!\n")
 	fmt.Printf("Container ID: %s\n", containerID[:12])
 	fmt.Printf("Container Name: %s\n", opts.Name)
-	fmt.Printf("\nYou can check the status with: synodeploy ps\n")
+	fmt.Printf("\nYou can check the status with: syno-docker ps\n")
 
 	return nil
 }

@@ -1,4 +1,4 @@
-# Docker Compose test file for SynoDeploy integration tests
+# Docker Compose test file for syno-docker integration tests
 version: '3.8'
 
 services:
@@ -91,7 +91,7 @@ services:
 networks:
   test-network:
     driver: bridge
-    name: synodeploy-test-${TEST_ID}
+    name: syno-docker-test-${TEST_ID}
 
 # Named volumes for testing volume management
 volumes:

@@ -1,18 +1,18 @@
-# SynoDeploy
+# syno-docker
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/scttfrdmn/synodeploy)](https://goreportcard.com/report/github.com/scttfrdmn/synodeploy)
+[![Go Report Card](https://goreportcard.com/badge/github.com/scttfrdmn/syno-docker)](https://goreportcard.com/report/github.com/scttfrdmn/syno-docker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v0.1.1-blue.svg)](https://github.com/scttfrdmn/synodeploy/releases/tag/v0.1.1)
+[![Release](https://img.shields.io/badge/release-v0.1.1-blue.svg)](https://github.com/scttfrdmn/syno-docker/releases/tag/v0.1.1)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
 [![Integration Tests](https://img.shields.io/badge/integration%20tests-passing-brightgreen.svg)](#integration-tests)
 
-**SynoDeploy** is a CLI tool that simplifies Docker container deployment to Synology NAS devices running DSM 7.2+. It handles SSH connection management, Docker client setup, and path resolution issues specific to Synology Container Manager.
+**syno-docker** is a CLI tool that simplifies Docker container deployment to Synology NAS devices running DSM 7.2+. It handles SSH connection management, Docker client setup, and path resolution issues specific to Synology Container Manager.
 
 **✅ Verified Working** on real Synology hardware with comprehensive integration testing.
 
 ## Features
 
-- 🚀 **One-command deployment** - Deploy containers as easily as `synodeploy run nginx`
+- 🚀 **One-command deployment** - Deploy containers as easily as `syno-docker run nginx`
 - 🔐 **SSH key & ssh-agent support** - Works with both SSH key files and ssh-agent
 - 👤 **Administrator user support** - Compatible with both `admin` and custom admin users
 - 📦 **docker-compose support** - Deploy complex multi-container applications
@@ -29,72 +29,72 @@
 
 ```bash
 # Install via Homebrew (recommended)
-brew install scttfrdmn/tap/synodeploy
+brew install scttfrdmn/tap/syno-docker
 
 # Or download binary from releases
-curl -L https://github.com/scttfrdmn/synodeploy/releases/latest/download/synodeploy-$(uname -s)-$(uname -m) -o synodeploy
-chmod +x synodeploy
-sudo mv synodeploy /usr/local/bin/
+curl -L https://github.com/scttfrdmn/syno-docker/releases/latest/download/syno-docker-$(uname -s)-$(uname -m) -o syno-docker
+chmod +x syno-docker
+sudo mv syno-docker /usr/local/bin/
 ```
 
 ### Setup
 
 ```bash
 # One-time setup - connect to your Synology NAS
-synodeploy init 192.168.1.100
+syno-docker init 192.168.1.100
 
 # Or with custom admin username (if not using 'admin')
-synodeploy init your-nas.local --user your-username
+syno-docker init your-nas.local --user your-username
 
 # For ssh-agent users (automatically detected)
-synodeploy init your-nas.local --user your-username
+syno-docker init your-nas.local --user your-username
 ```
 
 This will:
 - Test SSH connection to your NAS (supports both SSH keys and ssh-agent)
 - Verify Container Manager is running
 - Test Docker command execution
-- Save connection details to `~/.synodeploy/config.yaml`
+- Save connection details to `~/.syno-docker/config.yaml`
 
 ### Deploy Your First Container
 
 ```bash
 # Deploy Nginx web server
-synodeploy run nginx:latest \
+syno-docker run nginx:latest \
   --name web-server \
   --port 8080:80 \
   --volume /volume1/web:/usr/share/nginx/html
 
 # Deploy from docker-compose.yml
-synodeploy deploy ./docker-compose.yml
+syno-docker deploy ./docker-compose.yml
 
 # List running containers
-synodeploy ps
+syno-docker ps
 
 # Remove container
-synodeploy rm web-server
+syno-docker rm web-server
 ```
 
 ## Commands
 
-### `synodeploy init <host>`
+### `syno-docker init <host>`
 
 Setup connection to your Synology NAS.
 
 ```bash
-synodeploy init 192.168.1.100 \
+syno-docker init 192.168.1.100 \
   --user admin \
   --port 22 \
   --key ~/.ssh/id_rsa \
   --volume-path /volume1/docker
 ```
 
-### `synodeploy run <image>`
+### `syno-docker run <image>`
 
 Deploy a single container.
 
 ```bash
-synodeploy run postgres:13 \
+syno-docker run postgres:13 \
   --name database \
   --port 5432:5432 \
   --volume /volume1/postgres:/var/lib/postgresql/data \
@@ -113,12 +113,12 @@ synodeploy run postgres:13 \
 - `--workdir` - Working directory inside container
 - `--command` - Command to run in container
 
-### `synodeploy deploy <compose-file>`
+### `syno-docker deploy <compose-file>`
 
 Deploy from docker-compose.yml file.
 
 ```bash
-synodeploy deploy ./docker-compose.yml \
+syno-docker deploy ./docker-compose.yml \
   --project my-app \
   --env-file .env
 ```
@@ -133,33 +133,33 @@ synodeploy deploy ./docker-compose.yml \
 - Networks (basic support)
 - Dependencies (deployment order only)
 
-### `synodeploy ps`
+### `syno-docker ps`
 
 List containers.
 
 ```bash
 # Show running containers
-synodeploy ps
+syno-docker ps
 
 # Show all containers (including stopped)
-synodeploy ps --all
+syno-docker ps --all
 ```
 
-### `synodeploy rm <container>`
+### `syno-docker rm <container>`
 
 Remove container.
 
 ```bash
 # Remove stopped container
-synodeploy rm web-server
+syno-docker rm web-server
 
 # Force remove running container
-synodeploy rm web-server --force
+syno-docker rm web-server --force
 ```
 
 ## Configuration
 
-SynoDeploy stores configuration in `~/.synodeploy/config.yaml`:
+syno-docker stores configuration in `~/.syno-docker/config.yaml`:
 
 ```yaml
 host: 192.168.1.100
@@ -173,13 +173,13 @@ defaults:
 
 ## Volume Path Handling
 
-SynoDeploy automatically handles Synology volume paths:
+syno-docker automatically handles Synology volume paths:
 
 ```bash
 # These are equivalent:
-synodeploy run nginx -v /volume1/web:/usr/share/nginx/html
-synodeploy run nginx -v ./web:/usr/share/nginx/html  # Expands to /volume1/docker/web
-synodeploy run nginx -v web:/usr/share/nginx/html    # Expands to /volume1/docker/web
+syno-docker run nginx -v /volume1/web:/usr/share/nginx/html
+syno-docker run nginx -v ./web:/usr/share/nginx/html  # Expands to /volume1/docker/web
+syno-docker run nginx -v web:/usr/share/nginx/html    # Expands to /volume1/docker/web
 ```
 
 ## Requirements
@@ -209,10 +209,10 @@ ssh admin@192.168.1.100 'systemctl status pkg-ContainerManager-dockerd'
 
 ### Docker Command Not Found
 
-This is automatically handled by SynoDeploy, but if you see this error, it means:
+This is automatically handled by syno-docker, but if you see this error, it means:
 - Container Manager is not installed/running
 - Your user doesn't have the right permissions
-- There's a PATH issue (SynoDeploy handles this automatically)
+- There's a PATH issue (syno-docker handles this automatically)
 
 ### Permission Denied
 
@@ -233,8 +233,8 @@ ssh admin@192.168.1.100 'netstat -tlnp | grep :8080'
 ### Building from Source
 
 ```bash
-git clone https://github.com/scttfrdmn/synodeploy.git
-cd synodeploy
+git clone https://github.com/scttfrdmn/syno-docker.git
+cd syno-docker
 make build
 ```
 
@@ -248,7 +248,7 @@ make coverage         # Generate coverage report
 
 ### Integration Tests
 
-SynoDeploy includes comprehensive integration tests that validate functionality against real Synology hardware:
+syno-docker includes comprehensive integration tests that validate functionality against real Synology hardware:
 
 ```bash
 # Test connection to your NAS
@@ -258,7 +258,7 @@ go test -v -run TestConnectionToChubChub ./tests/integration/
 go test -v -run TestDirectDockerCommands ./tests/integration/
 
 # Full end-to-end testing
-go test -v -run TestSynoDeployEndToEnd ./tests/integration/
+go test -v -run TestSynoDockerEndToEnd ./tests/integration/
 
 # All integration tests
 go test -v ./tests/integration/
@@ -275,7 +275,7 @@ go test -v ./tests/integration/
 
 ### Quality Checks
 
-SynoDeploy maintains Go Report Card A+ grade with:
+syno-docker maintains Go Report Card A+ grade with:
 
 - `gofmt` - Code formatting
 - `go vet` - Static analysis
@@ -310,9 +310,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 - 📖 [Documentation](docs/)
-- 🐛 [Issue Tracker](https://github.com/scttfrdmn/synodeploy/issues)
-- 💬 [Discussions](https://github.com/scttfrdmn/synodeploy/discussions)
-- 📧 Email: support@synodeploy.com
+- 🐛 [Issue Tracker](https://github.com/scttfrdmn/syno-docker/issues)
+- 💬 [Discussions](https://github.com/scttfrdmn/syno-docker/discussions)
+- 📧 Email: support@syno-docker.com
 
 ---
 

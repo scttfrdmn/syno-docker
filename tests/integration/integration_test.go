@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/scttfrdmn/synodeploy/pkg/config"
-	"github.com/scttfrdmn/synodeploy/pkg/deploy"
-	"github.com/scttfrdmn/synodeploy/pkg/synology"
-	"github.com/scttfrdmn/synodeploy/tests/integration/helpers"
+	"github.com/scttfrdmn/syno-docker/pkg/config"
+	"github.com/scttfrdmn/syno-docker/pkg/deploy"
+	"github.com/scttfrdmn/syno-docker/pkg/synology"
+	"github.com/scttfrdmn/syno-docker/tests/integration/helpers"
 )
 
 var (
@@ -60,7 +60,7 @@ func setupTestEnvironment() (*TestRunner, error) {
 			VolumePath string `yaml:"volume_path"`
 			Network    string `yaml:"network,omitempty"`
 		}{
-			VolumePath: "/volume1/synodeploy-test",
+			VolumePath: "/volume1/syno-docker-test",
 			Network:    "bridge",
 		},
 	}
@@ -137,7 +137,7 @@ func testBasicDeployment(t *testing.T) {
 	}
 
 	// Create test HTML file
-	htmlContent := fmt.Sprintf("<h1>SynoDeploy Test - %s</h1>", time.Now().Format("2006-01-02 15:04:05"))
+	htmlContent := fmt.Sprintf("<h1>syno-docker Test - %s</h1>", time.Now().Format("2006-01-02 15:04:05"))
 	if err := helpers.CreateTestFile(testRunner.Connection,
 		fmt.Sprintf("%s/html/index.html", testRunner.Config.Defaults.VolumePath),
 		htmlContent); err != nil {
@@ -178,7 +178,7 @@ func testBasicDeployment(t *testing.T) {
 
 	// Test HTTP connectivity
 	if err := helpers.TestHTTPEndpoint(fmt.Sprintf("http://%s:8080", testRunner.Config.Host),
-		"SynoDeploy Test", 30*time.Second); err != nil {
+		"syno-docker Test", 30*time.Second); err != nil {
 		t.Errorf("HTTP connectivity test failed: %v", err)
 	}
 }

@@ -299,8 +299,8 @@ func TestGenerateProjectName(t *testing.T) {
 		{"/home/user/myproject/docker-compose.yml", "myproject"},
 		{"/path/to/my-app/docker-compose.yml", "myapp"},
 		{"/path/to/My_Project/docker-compose.yml", "myproject"},
-		{"./docker-compose.yml", "synodeploy"},
-		{"/docker-compose.yml", "synodeploy"}, // This should generate the default name
+		{"./docker-compose.yml", "syno-docker"},
+		{"/docker-compose.yml", "syno-docker"}, // This should generate the default name
 	}
 
 	for _, tt := range tests {

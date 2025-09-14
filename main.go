@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/scttfrdmn/synodeploy/cmd"
+	"github.com/scttfrdmn/syno-docker/cmd"
 )
 
 var (

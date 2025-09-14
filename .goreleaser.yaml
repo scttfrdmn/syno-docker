@@ -1,7 +1,7 @@
-# GoReleaser configuration for SynoDeploy
+# GoReleaser configuration for syno-docker
 # Copyright 2025 Scott Friedman
 
-project_name: synodeploy
+project_name: syno-docker
 
 before:
   hooks:
@@ -13,7 +13,7 @@ before:
     - go mod tidy
 
 builds:
-  - id: synodeploy
+  - id: syno-docker
     env:
       - CGO_ENABLED=0
     goos:
@@ -23,7 +23,7 @@ builds:
       - amd64
       - arm64
     main: ./main.go
-    binary: synodeploy
+    binary: syno-docker
     ldflags:
       - -s -w
       - -X main.version={{.Version}}
@@ -33,7 +33,7 @@ builds:
       - -trimpath
 
 archives:
-  - id: synodeploy
+  - id: syno-docker
     format: tar.gz
     # Use zip for Windows
     format_overrides:
@@ -91,17 +91,17 @@ changelog:
 
 # Homebrew tap configuration (brews is correct for CLI tools)
 brews:
-  - name: synodeploy
+  - name: syno-docker
     ids:
-      - synodeploy
+      - syno-docker
     # Repository for the Homebrew tap (must start with homebrew-)
     repository:
       owner: scttfrdmn
-      name: homebrew-synodeploy
+      name: homebrew-syno-docker
       branch: main
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     # URL template for downloading the archive
-    url_template: "https://github.com/scttfrdmn/synodeploy/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/scttfrdmn/syno-docker/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     # Git author used to commit to the repository
     commit_author:
       name: Scott Friedman
@@ -111,7 +111,7 @@ brews:
     # Folder inside the repository to put the formula
     folder: Formula
     # Homepage of the project
-    homepage: "https://github.com/scttfrdmn/synodeploy"
+    homepage: "https://github.com/scttfrdmn/syno-docker"
     # Description of the project
     description: "Deploy containers to Synology DSM 7.2+ with ease"
     # License
@@ -122,23 +122,23 @@ brews:
     skip_upload: false
     # Custom install script
     install: |
-      bin.install "synodeploy"
+      bin.install "syno-docker"
       # Generate shell completions
-      generate_completions_from_executable(bin/"synodeploy", "completion")
+      generate_completions_from_executable(bin/"syno-docker", "completion")
     # Tests (required by Homebrew)
     test: |
-      system "#{bin}/synodeploy", "--version"
-      system "#{bin}/synodeploy", "--help"
+      system "#{bin}/syno-docker", "--version"
+      system "#{bin}/syno-docker", "--help"
       # Test init command without actually connecting
-      output = shell_output("#{bin}/synodeploy init --help")
+      output = shell_output("#{bin}/syno-docker init --help")
       assert_match "Setup connection to Synology NAS", output
 
 # Linux packages
 nfpms:
-  - id: synodeploy
-    package_name: synodeploy
+  - id: syno-docker
+    package_name: syno-docker
     vendor: Scott Friedman
-    homepage: https://github.com/scttfrdmn/synodeploy
+    homepage: https://github.com/scttfrdmn/syno-docker
     maintainer: Scott Friedman <scott@friedman.dev>
     description: Deploy containers to Synology DSM 7.2+ with ease
     license: MIT
@@ -151,17 +151,17 @@ nfpms:
     priority: optional
     contents:
       - src: ./README.md
-        dst: /usr/share/doc/synodeploy/README.md
+        dst: /usr/share/doc/syno-docker/README.md
       - src: ./LICENSE
-        dst: /usr/share/doc/synodeploy/LICENSE
+        dst: /usr/share/doc/syno-docker/LICENSE
       - src: ./CHANGELOG.md
-        dst: /usr/share/doc/synodeploy/CHANGELOG.md
+        dst: /usr/share/doc/syno-docker/CHANGELOG.md
 
 # Docker image (optional)
 dockers:
   - image_templates:
-      - "ghcr.io/scttfrdmn/synodeploy:{{ .Version }}-amd64"
-      - "ghcr.io/scttfrdmn/synodeploy:latest-amd64"
+      - "ghcr.io/scttfrdmn/syno-docker:{{ .Version }}-amd64"
+      - "ghcr.io/scttfrdmn/syno-docker:latest-amd64"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
@@ -176,8 +176,8 @@ dockers:
       - LICENSE
 
   - image_templates:
-      - "ghcr.io/scttfrdmn/synodeploy:{{ .Version }}-arm64"
-      - "ghcr.io/scttfrdmn/synodeploy:latest-arm64"
+      - "ghcr.io/scttfrdmn/syno-docker:{{ .Version }}-arm64"
+      - "ghcr.io/scttfrdmn/syno-docker:latest-arm64"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
@@ -192,21 +192,21 @@ dockers:
       - LICENSE
 
 docker_manifests:
-  - name_template: "ghcr.io/scttfrdmn/synodeploy:{{ .Version }}"
+  - name_template: "ghcr.io/scttfrdmn/syno-docker:{{ .Version }}"
     image_templates:
-      - "ghcr.io/scttfrdmn/synodeploy:{{ .Version }}-amd64"
-      - "ghcr.io/scttfrdmn/synodeploy:{{ .Version }}-arm64"
-  - name_template: "ghcr.io/scttfrdmn/synodeploy:latest"
+      - "ghcr.io/scttfrdmn/syno-docker:{{ .Version }}-amd64"
+      - "ghcr.io/scttfrdmn/syno-docker:{{ .Version }}-arm64"
+  - name_template: "ghcr.io/scttfrdmn/syno-docker:latest"
     image_templates:
-      - "ghcr.io/scttfrdmn/synodeploy:latest-amd64"
-      - "ghcr.io/scttfrdmn/synodeploy:latest-arm64"
+      - "ghcr.io/scttfrdmn/syno-docker:latest-amd64"
+      - "ghcr.io/scttfrdmn/syno-docker:latest-arm64"
 
 # Release configuration
 release:
   # Repository to upload the release to
   github:
     owner: scttfrdmn
-    name: synodeploy
+    name: syno-docker
   # If set to true, will not auto-publish the release
   draft: false
   # Whether to remove existing draft releases with the same name before creating
@@ -218,15 +218,15 @@ release:
   name_template: "{{.ProjectName}} {{.Version}}"
   # Header for the release body
   header: |
-    ## SynoDeploy {{.Version}}
+    ## syno-docker {{.Version}}
 
-    Welcome to this new release of SynoDeploy! 🎉
+    Welcome to this new release of syno-docker! 🎉
 
     ### Quick Start
 
     ```bash
     # Install via Homebrew
-    brew install scttfrdmn/synodeploy/synodeploy
+    brew install scttfrdmn/syno-docker/syno-docker
 
     # Or download binary directly from releases below
     ```
@@ -235,10 +235,10 @@ release:
 
     ```bash
     # Setup connection to your NAS
-    synodeploy init 192.168.1.100
+    syno-docker init 192.168.1.100
 
     # Deploy your first container
-    synodeploy run nginx:latest --port 8080:80
+    syno-docker run nginx:latest --port 8080:80
     ```
 
   # Footer for the release body
@@ -247,7 +247,7 @@ release:
 
     ### Homebrew (macOS/Linux)
     ```bash
-    brew install scttfrdmn/tap/synodeploy
+    brew install scttfrdmn/tap/syno-docker
     ```
 
     ### Direct Download
@@ -257,9 +257,9 @@ release:
     All binaries are signed and checksums are available in `checksums.txt`.
 
     ---
-    **Full Changelog**: https://github.com/scttfrdmn/synodeploy/compare/{{.PreviousTag}}...{{.Tag}}
+    **Full Changelog**: https://github.com/scttfrdmn/syno-docker/compare/{{.PreviousTag}}...{{.Tag}}
 
-    **Questions?** Check out the [documentation](https://github.com/scttfrdmn/synodeploy/tree/main/docs) or [open an issue](https://github.com/scttfrdmn/synodeploy/issues).
+    **Questions?** Check out the [documentation](https://github.com/scttfrdmn/syno-docker/tree/main/docs) or [open an issue](https://github.com/scttfrdmn/syno-docker/issues).
 
 # GitHub Actions workflow will trigger on tag push
 # Make sure to set up the following secrets in your GitHub repository:

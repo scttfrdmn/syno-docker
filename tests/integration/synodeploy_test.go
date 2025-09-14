@@ -8,14 +8,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/scttfrdmn/synodeploy/pkg/config"
-	"github.com/scttfrdmn/synodeploy/pkg/deploy"
-	"github.com/scttfrdmn/synodeploy/pkg/synology"
-	"github.com/scttfrdmn/synodeploy/tests/integration/helpers"
+	"github.com/scttfrdmn/syno-docker/pkg/config"
+	"github.com/scttfrdmn/syno-docker/pkg/deploy"
+	"github.com/scttfrdmn/syno-docker/pkg/synology"
+	"github.com/scttfrdmn/syno-docker/tests/integration/helpers"
 )
 
-// TestSynoDeployEndToEnd tests the complete SynoDeploy workflow
-func TestSynoDeployEndToEnd(t *testing.T) {
+// TestSynoDockerEndToEnd tests the complete syno-docker workflow
+func TestSynoDockerEndToEnd(t *testing.T) {
 	// Skip in CI environments
 	if os.Getenv("CI") != "" || os.Getenv("GITHUB_ACTIONS") != "" {
 		t.Skip("Skipping local network test in CI environment")
@@ -50,7 +50,7 @@ func TestSynoDeployEndToEnd(t *testing.T) {
 			t.Fatalf("Connection test failed: %v", err)
 		}
 
-		t.Logf("✅ SynoDeploy connection to chubchub.local successful")
+		t.Logf("✅ syno-docker connection to chubchub.local successful")
 	})
 
 	// Test single container deployment
@@ -62,7 +62,7 @@ func TestSynoDeployEndToEnd(t *testing.T) {
 		defer conn.Close()
 
 		// Deploy nginx container
-		containerName := "synodeploy-test-nginx-" + helpers.RandomString(6)
+		containerName := "syno-docker-test-nginx-" + helpers.RandomString(6)
 		opts := &deploy.ContainerOptions{
 			Image:       "nginx:alpine",
 			Name:        containerName,
@@ -79,8 +79,8 @@ func TestSynoDeployEndToEnd(t *testing.T) {
 		}
 
 		htmlContent := fmt.Sprintf(`<!DOCTYPE html>
-<html><head><title>SynoDeploy Test</title></head>
-<body><h1>SynoDeploy Integration Test</h1>
+<html><head><title>syno-docker Test</title></head>
+<body><h1>syno-docker Integration Test</h1>
 <p>Container: %s</p>
 <p>Timestamp: %s</p></body></html>`,
 			containerName, time.Now().Format("2006-01-02 15:04:05"))
@@ -123,7 +123,7 @@ func TestSynoDeployEndToEnd(t *testing.T) {
 		}
 
 		// Test HTTP endpoint
-		if err := helpers.TestHTTPEndpoint("http://chubchub.local:8082", "SynoDeploy Integration Test", 30*time.Second); err != nil {
+		if err := helpers.TestHTTPEndpoint("http://chubchub.local:8082", "syno-docker Integration Test", 30*time.Second); err != nil {
 			t.Errorf("HTTP test failed: %v", err)
 		} else {
 			t.Logf("✅ HTTP endpoint accessible and serving content")
@@ -148,7 +148,7 @@ func TestSynoDeployEndToEnd(t *testing.T) {
 		}
 		defer conn.Close()
 
-		containerName := "synodeploy-lifecycle-test-" + helpers.RandomString(6)
+		containerName := "syno-docker-lifecycle-test-" + helpers.RandomString(6)
 
 		// Deploy a long-running container
 		opts := &deploy.ContainerOptions{

@@ -7,8 +7,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/scttfrdmn/synodeploy/pkg/config"
-	"github.com/scttfrdmn/synodeploy/pkg/synology"
+	"github.com/scttfrdmn/syno-docker/pkg/config"
+	"github.com/scttfrdmn/syno-docker/pkg/synology"
 )
 
 var (
@@ -21,7 +21,7 @@ var (
 var initCmd = &cobra.Command{
 	Use:   "init <host>",
 	Short: "Setup connection to Synology NAS",
-	Long: `Initialize SynoDeploy configuration for connecting to your Synology NAS.
+	Long: `Initialize syno-docker configuration for connecting to your Synology NAS.
 This command sets up SSH connection details and tests the connection.`,
 	Args: cobra.ExactArgs(1),
 	RunE: runInit,
@@ -63,7 +63,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 
 	configPath, _ := config.GetConfigPath()
 	fmt.Printf("✅ Connection successful!\nConfiguration saved to %s\n", configPath)
-	fmt.Printf("You can now deploy containers using 'synodeploy run' or 'synodeploy deploy'\n")
+	fmt.Printf("You can now deploy containers using 'syno-docker run' or 'syno-docker deploy'\n")
 
 	return nil
 }

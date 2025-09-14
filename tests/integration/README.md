@@ -1,6 +1,6 @@
-# SynoDeploy Integration Test Suite
+# syno-docker Integration Test Suite
 
-This comprehensive integration test suite validates SynoDeploy functionality against a real Synology NAS running DSM 7.2+ with Container Manager.
+This comprehensive integration test suite validates syno-docker functionality against a real Synology NAS running DSM 7.2+ with Container Manager.
 
 ## 🎯 **Test Coverage**
 
@@ -55,15 +55,15 @@ sudo systemctl start sshd
 
 **Create Test Directory:**
 ```bash
-sudo mkdir -p /volume1/synodeploy-test
-sudo chown your-username:users /volume1/synodeploy-test
-sudo chmod 755 /volume1/synodeploy-test
+sudo mkdir -p /volume1/syno-docker-test
+sudo chown your-username:users /volume1/syno-docker-test
+sudo chmod 755 /volume1/syno-docker-test
 ```
 
 ### 2. Configure SSH Keys
 ```bash
 # Generate SSH key if needed
-ssh-keygen -t rsa -b 4096 -C "synodeploy-test"
+ssh-keygen -t rsa -b 4096 -C "syno-docker-test"
 
 # Copy public key to NAS
 ssh-copy-id your-username@your-nas-ip
@@ -207,7 +207,7 @@ nas:
   ssh_key_path: "~/.ssh/id_rsa"
 
 test:
-  volume_path: "/volume1/synodeploy-test"
+  volume_path: "/volume1/syno-docker-test"
   cleanup: true
   timeout: "5m"
 
@@ -256,7 +256,7 @@ ssh your-nas-ip "docker ps -a | grep 'test-' | awk '{print \$1}' | xargs docker 
 ssh your-nas-ip "docker volume ls | grep 'test-' | awk '{print \$2}' | xargs docker volume rm"
 
 # Clean test directory
-ssh your-nas-ip "rm -rf /volume1/synodeploy-test/*"
+ssh your-nas-ip "rm -rf /volume1/syno-docker-test/*"
 ```
 
 ### Common Issues
@@ -281,8 +281,8 @@ ssh your-nas-ip "docker ps"
 **Volume Mount Errors:**
 ```bash
 # Check volume path permissions
-ssh your-nas-ip "ls -la /volume1/synodeploy-test"
-ssh your-nas-ip "mkdir -p /volume1/synodeploy-test && chmod 755 /volume1/synodeploy-test"
+ssh your-nas-ip "ls -la /volume1/syno-docker-test"
+ssh your-nas-ip "mkdir -p /volume1/syno-docker-test && chmod 755 /volume1/syno-docker-test"
 ```
 
 ## 🎯 **Best Practices**
@@ -301,4 +301,4 @@ ssh your-nas-ip "mkdir -p /volume1/synodeploy-test && chmod 755 /volume1/synodep
 4. **Cleanup Verification**: Ensure all resources are cleaned up
 5. **Test Isolation**: Each test run should be independent
 
-This integration test suite provides comprehensive validation of SynoDeploy functionality against real Synology hardware, ensuring production readiness and reliability.
+This integration test suite provides comprehensive validation of syno-docker functionality against real Synology hardware, ensuring production readiness and reliability.

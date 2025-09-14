@@ -7,7 +7,7 @@ import (
 	"github.com/docker/docker/client"
 	"github.com/pkg/errors"
 
-	"github.com/scttfrdmn/synodeploy/pkg/synology"
+	"github.com/scttfrdmn/syno-docker/pkg/synology"
 )
 
 // ContainerOptions defines options for container deployment

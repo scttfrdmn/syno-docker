@@ -18,12 +18,12 @@ const (
 	// DefaultNetwork is the default Docker network
 	DefaultNetwork = "bridge"
 	// ConfigDir is the configuration directory name
-	ConfigDir = ".synodeploy"
+	ConfigDir = ".syno-docker"
 	// ConfigFile is the configuration file name
 	ConfigFile = "config.yaml"
 )
 
-// Config represents the SynoDeploy configuration
+// Config represents the syno-docker configuration
 type Config struct {
 	Host       string `yaml:"host"`
 	Port       int    `yaml:"port,omitempty"`
@@ -97,7 +97,7 @@ func Load() (*Config, error) {
 	}
 
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		return nil, fmt.Errorf("configuration not found. Run 'synodeploy init <host>' first")
+		return nil, fmt.Errorf("configuration not found. Run 'syno-docker init <host>' first")
 	}
 
 	data, err := os.ReadFile(configPath)

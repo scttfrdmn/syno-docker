@@ -5,8 +5,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/scttfrdmn/synodeploy/pkg/deploy"
-	"github.com/scttfrdmn/synodeploy/pkg/synology"
+	"github.com/scttfrdmn/syno-docker/pkg/deploy"
+	"github.com/scttfrdmn/syno-docker/pkg/synology"
 )
 
 // CleanupManager manages cleanup of test resources
@@ -256,9 +256,9 @@ func (cm *CleanupManager) CleanupAll() error {
 	return nil
 }
 
-// ForceCleanupContainers removes all containers with synodeploy test prefix
+// ForceCleanupContainers removes all containers with syno-docker test prefix
 func (cm *CleanupManager) ForceCleanupContainers() error {
-	fmt.Println("Force cleaning up all synodeploy test containers...")
+	fmt.Println("Force cleaning up all syno-docker test containers...")
 
 	// List all containers
 	containers, err := deploy.ListContainers(cm.conn, true)

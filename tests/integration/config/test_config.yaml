@@ -1,4 +1,4 @@
-# SynoDeploy Integration Test Configuration
+# syno-docker Integration Test Configuration
 # Copy this file and customize for your test environment
 
 # Synology NAS connection details
@@ -10,8 +10,8 @@ nas:
 
 # Test configuration
 test:
-  volume_path: "/volume1/synodeploy-test"  # Test volume directory
-  network_name: "synodeploy-test-net"     # Test network name
+  volume_path: "/volume1/syno-docker-test"  # Test volume directory
+  network_name: "syno-docker-test-net"     # Test network name
   cleanup: true                           # Cleanup resources after tests
   timeout: "5m"                          # Test timeout per suite
   parallel: false                        # Run tests in parallel (experimental)
@@ -39,9 +39,9 @@ test_data:
   html_content: |
     <!DOCTYPE html>
     <html>
-    <head><title>SynoDeploy Integration Test</title></head>
+    <head><title>syno-docker Integration Test</title></head>
     <body>
-        <h1>SynoDeploy Integration Test</h1>
+        <h1>syno-docker Integration Test</h1>
         <p>If you can see this page, the integration test is working!</p>
         <p>Test timestamp: {{TIMESTAMP}}</p>
     </body>

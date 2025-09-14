@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/scttfrdmn/synodeploy/pkg/config"
-	"github.com/scttfrdmn/synodeploy/pkg/synology"
+	"github.com/scttfrdmn/syno-docker/pkg/config"
+	"github.com/scttfrdmn/syno-docker/pkg/synology"
 )
 
 // TestSimpleConnection tests basic SSH and Docker connectivity
@@ -39,7 +39,7 @@ func TestSimpleConnection(t *testing.T) {
 			VolumePath string `yaml:"volume_path"`
 			Network    string `yaml:"network,omitempty"`
 		}{
-			VolumePath: "/volume1/synodeploy-test",
+			VolumePath: "/volume1/syno-docker-test",
 			Network:    "bridge",
 		},
 	}

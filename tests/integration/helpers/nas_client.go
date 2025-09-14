@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/scttfrdmn/synodeploy/pkg/deploy"
-	"github.com/scttfrdmn/synodeploy/pkg/synology"
+	"github.com/scttfrdmn/syno-docker/pkg/deploy"
+	"github.com/scttfrdmn/syno-docker/pkg/synology"
 )
 
 // RandomString generates a random string of specified length

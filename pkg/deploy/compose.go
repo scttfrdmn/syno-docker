@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v3"
 
-	"github.com/scttfrdmn/synodeploy/pkg/synology"
+	"github.com/scttfrdmn/syno-docker/pkg/synology"
 )
 
 // ComposeService represents a service in a docker-compose file
@@ -249,7 +249,7 @@ func GenerateProjectName(composePath string) string {
 	projectName = strings.ReplaceAll(projectName, "-", "")
 
 	if projectName == "" || projectName == "." || projectName == "/" {
-		projectName = "synodeploy"
+		projectName = "syno-docker"
 	}
 
 	return projectName

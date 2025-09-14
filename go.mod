@@ -1,4 +1,4 @@
-module github.com/scttfrdmn/synodeploy
+module github.com/scttfrdmn/syno-docker
 
 go 1.24.0
 

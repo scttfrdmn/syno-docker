@@ -4,7 +4,7 @@
 .PHONY: build test clean install dev-install fmt vet lint staticcheck ineffassign misspell gocyclo deps quality-check pre-commit help
 
 # Build variables
-BINARY_NAME := synodeploy
+BINARY_NAME := syno-docker
 BUILD_DIR := bin
 MAIN_PACKAGE := ./main.go
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")

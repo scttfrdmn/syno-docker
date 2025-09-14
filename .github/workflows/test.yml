@@ -1,4 +1,4 @@
-# GitHub Actions workflow for testing SynoDeploy
+# GitHub Actions workflow for testing syno-docker
 # Copyright 2025 Scott Friedman
 
 name: Test

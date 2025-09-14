@@ -4,11 +4,11 @@ Official Homebrew tap for tools developed by Scott Friedman.
 
 ## Available Formulae
 
-### [SynoDeploy](https://github.com/scttfrdmn/synodeploy)
+### [syno-docker](https://github.com/scttfrdmn/syno-docker)
 Deploy containers to Synology DSM 7.2+ with ease.
 
 ```bash
-brew install scttfrdmn/tap/synodeploy
+brew install scttfrdmn/tap/syno-docker
 ```
 
 **Features:**
@@ -28,42 +28,42 @@ brew tap scttfrdmn/tap
 # Install any formula
 brew install <formula-name>
 
-# Example: Install SynoDeploy
-brew install synodeploy
+# Example: Install syno-docker
+brew install syno-docker
 ```
 
 ## Usage
 
-### SynoDeploy
+### syno-docker
 ```bash
 # Setup connection to your Synology NAS
-synodeploy init your-nas.local --user your-username
+syno-docker init your-nas.local --user your-username
 
 # Deploy a container
-synodeploy run nginx:latest --port 8080:80
+syno-docker run nginx:latest --port 8080:80
 
 # Deploy from docker-compose
-synodeploy deploy docker-compose.yml
+syno-docker deploy docker-compose.yml
 
 # List containers
-synodeploy ps
+syno-docker ps
 
 # Remove container
-synodeploy rm container-name
+syno-docker rm container-name
 ```
 
 ## Requirements
 
-### For SynoDeploy
+### For syno-docker
 - **Synology NAS**: DSM 7.2+ with Container Manager
 - **SSH Access**: Enabled with key-based authentication or ssh-agent
 - **Network Access**: Local network connectivity to your NAS
 
 ## Support
 
-- 📖 [SynoDeploy Documentation](https://github.com/scttfrdmn/synodeploy/tree/main/docs)
-- 🐛 [Issue Tracker](https://github.com/scttfrdmn/synodeploy/issues)
-- 💬 [Discussions](https://github.com/scttfrdmn/synodeploy/discussions)
+- 📖 [syno-docker Documentation](https://github.com/scttfrdmn/syno-docker/tree/main/docs)
+- 🐛 [Issue Tracker](https://github.com/scttfrdmn/syno-docker/issues)
+- 💬 [Discussions](https://github.com/scttfrdmn/syno-docker/discussions)
 
 ## Contributing
 
