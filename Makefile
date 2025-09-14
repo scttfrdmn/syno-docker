@@ -105,7 +105,7 @@ gocyclo:
 		echo "Installing gocyclo..."; \
 		go install github.com/fzipp/gocyclo/cmd/gocyclo@$(GOCYCLO_VERSION); \
 	fi
-	-$$(go env GOPATH)/bin/gocyclo -over 15 . | grep -v _test.go
+	find . -name "*.go" -not -name "*_test.go" -not -path "./vendor/*" -exec $$(go env GOPATH)/bin/gocyclo -over 15 {} + || true
 
 # Install development dependencies (Go Report Card tools)
 deps:
