@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6] - 2025-09-14
+
+### Added
+- **Linux Package Distribution**: Re-enabled deb, rpm, apk packages for complete coverage
+- **Complete Distribution**: Now supports Homebrew (macOS/Linux) + native Linux packages
+
+### Fixed
+- **Homebrew Token Permissions**: Resolved 403 errors for automatic formula generation
+- **Release Template**: Fixed Goreleaser template variable issues
+
+## [0.1.5] - 2025-09-14
+
+### Added
+- **Homebrew Formula**: Successfully auto-generated Formula/synodeploy.rb
+- **Cross-platform Distribution**: macOS Intel/ARM, Linux AMD64/ARM64
+- **Shell Completions**: bash, zsh, fish completion support
+
+### Fixed
+- **GitHub Token Access**: Fixed permissions for homebrew-synodeploy repository
+
 ## [0.1.4] - 2025-09-14
 
 ### Fixed
