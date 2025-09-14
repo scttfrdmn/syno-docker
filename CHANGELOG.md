@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2025-09-14
+
+### Fixed
+- **Go Report Card Compliance**: Fixed all staticcheck, ineffassign, and style issues for A+ grade
+- **Code Quality**: Simplified string operations and removed unused functions
+- **CI Pipeline**: Updated tooling to use proper Go Report Card tools (golint vs golangci-lint)
+- **Pre-commit Hooks**: Fixed to use correct linting tools and proper validation
+
+### Changed
+- **Linting Tools**: Switched from golangci-lint to individual Go Report Card tools
+- **Quality Checks**: Now properly mimic Go Report Card grading criteria
+- **Error Messages**: Fixed capitalization per Go style guidelines
+
 ## [0.1.2] - 2025-09-14
 
 ### Fixed
