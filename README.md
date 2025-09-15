@@ -50,6 +50,10 @@
 
 ```bash
 # Install via Homebrew (macOS/Linux) - Recommended
+brew tap scttfrdmn/syno-docker
+brew install syno-docker
+
+# Or in one command:
 brew install scttfrdmn/syno-docker/syno-docker
 
 # Direct binary download (all platforms)

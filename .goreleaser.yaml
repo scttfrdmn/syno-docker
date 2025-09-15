@@ -226,7 +226,8 @@ release:
 
     ```bash
     # Install via Homebrew
-    brew install scttfrdmn/syno-docker/syno-docker
+    brew tap scttfrdmn/syno-docker
+    brew install syno-docker
 
     # Or download binary directly from releases below
     ```
@@ -247,7 +248,8 @@ release:
 
     ### Homebrew (macOS/Linux)
     ```bash
-    brew install scttfrdmn/tap/syno-docker
+    brew tap scttfrdmn/syno-docker
+    brew install syno-docker
     ```
 
     ### Direct Download

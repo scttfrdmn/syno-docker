@@ -8,7 +8,7 @@ Official Homebrew tap for tools developed by Scott Friedman.
 Deploy containers to Synology DSM 7.2+ with ease.
 
 ```bash
-brew install scttfrdmn/tap/syno-docker
+brew install scttfrdmn/syno-docker/syno-docker
 ```
 
 **Features:**
@@ -23,7 +23,7 @@ brew install scttfrdmn/tap/syno-docker
 
 ```bash
 # Add the tap
-brew tap scttfrdmn/tap
+brew tap scttfrdmn/syno-docker
 
 # Install any formula
 brew install <formula-name>

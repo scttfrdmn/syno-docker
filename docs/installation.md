@@ -8,7 +8,7 @@ The easiest way to install syno-docker is via Homebrew:
 
 ```bash
 # Add the tap
-brew tap scttfrdmn/tap
+brew tap scttfrdmn/syno-docker
 
 # Install syno-docker
 brew install syno-docker
@@ -195,7 +195,7 @@ brew update
 brew doctor
 
 # Try installing again
-brew install scttfrdmn/tap/syno-docker
+brew install scttfrdmn/syno-docker/syno-docker
 ```
 
 ## Uninstallation
