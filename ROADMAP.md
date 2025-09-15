@@ -15,6 +15,24 @@ This document outlines the planned development phases for syno-docker, focusing 
 
 ## Planned Development Phases
 
+### **Phase 4.5: Comprehensive Integration Testing** 🧪
+**Target: v0.2.2 (October 2025)**
+
+**Objective**: Expand integration test suite to cover all v0.2.x commands with real Synology hardware validation.
+
+**Current Gap**: While v0.2.1 provides 40+ commands with unit tests, integration tests only cover basic deployment. Need comprehensive end-to-end testing for production confidence.
+
+**Integration Tests to Add**:
+- **Container Operations**: logs, exec, start/stop/restart, stats with real container scenarios
+- **Image Management**: pull, images, rmi with registry interactions and cleanup verification
+- **Volume Management**: volume lifecycle, mounting scenarios, data persistence validation
+- **Network Management**: network creation, container connectivity, multi-container communication
+- **System Operations**: system df/info/prune with actual resource cleanup verification
+
+**Quality Goals**: 90%+ integration test coverage, parallel execution, comprehensive error scenario testing.
+
+---
+
 ### **Phase 5: Enhanced Compose Operations** 🎯
 **Target: v0.3.0 (Q4 2025)**
 
@@ -189,6 +207,7 @@ syno-docker resources alerts --threshold cpu=80% memory=90%
 | Version | Target Date | Focus Area | Key Features |
 |---------|-------------|------------|--------------|
 | **v0.2.1** | **Sep 2025** | Network Management | Complete Docker API coverage |
+| **v0.2.2** | **Oct 2025** | Integration Testing | Comprehensive test coverage for all v0.2.x commands |
 | **v0.3.0** | Q4 2025 | Enhanced Compose | Service-level operations, project management |
 | **v0.4.0** | Q1 2026 | Multi-NAS Support | Profile system, cross-NAS operations |
 | **v0.5.0** | Q2 2026 | Health & Operations | Monitoring, backup, resource management |
