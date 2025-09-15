@@ -97,7 +97,7 @@ syno-docker rm web-server
 
 ## Commands Overview
 
-syno-docker provides **20+ commands** covering the complete Docker workflow:
+syno-docker provides **22 main commands + 18 subcommands** covering the complete Docker workflow:
 
 ### **Container Lifecycle**
 - `syno-docker run` - Deploy single containers with full configuration options
@@ -330,6 +330,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 - 📖 [Documentation](docs/)
+- 🗺️ [Development Roadmap](ROADMAP.md)
 - 🐛 [Issue Tracker](https://github.com/scttfrdmn/syno-docker/issues)
 - 💬 [Discussions](https://github.com/scttfrdmn/syno-docker/discussions)
 - 📧 Email: support@syno-docker.com

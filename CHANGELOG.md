@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Enhanced
 - **CLI Framework**: Added 7 new network subcommands with full option support
 - **Documentation**: Updated README and usage docs with network examples and workflows
-- **Command Count**: Now 25+ commands providing 100% Docker API coverage
+- **Command Count**: Now 40+ total commands (22 main + 18 subcommands) providing 100% Docker API coverage
 - **Network Isolation**: Support for internal networks and custom bridge configurations
 
 ### Technical Details
