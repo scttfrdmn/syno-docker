@@ -60,7 +60,7 @@ func setupTestEnvironment() (*TestRunner, error) {
 			VolumePath string `yaml:"volume_path"`
 			Network    string `yaml:"network,omitempty"`
 		}{
-			VolumePath: "/volume1/syno-docker-test",
+			VolumePath: "/volume1/docker/syno-docker-test",
 			Network:    "bridge",
 		},
 	}
