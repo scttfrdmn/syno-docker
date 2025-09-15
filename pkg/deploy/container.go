@@ -462,9 +462,9 @@ func ListImages(conn *synology.Connection, repository string, opts *ImagesOption
 	}
 
 	if opts.Digests {
-		args = append(args, "--format", "table {{.Repository}}\t{{.Tag}}\t{{.Digest}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}")
+		args = append(args, "--format", "'table {{.Repository}}\t{{.Tag}}\t{{.Digest}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}'")
 	} else {
-		args = append(args, "--format", "table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}")
+		args = append(args, "--format", "'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}'")
 	}
 
 	if repository != "" {
@@ -604,9 +604,8 @@ func GetSystemDf(conn *synology.Connection, opts *SystemDfOptions) ([]SystemDfIt
 	}
 	if opts.Format != "" {
 		args = append(args, "--format", opts.Format)
-	} else {
-		args = append(args, "--format", "table {{.Type}}\t{{.Total}}\t{{.Active}}\t{{.Size}}\t{{.Reclaimable}}")
 	}
+	// Don't add default format, let Docker use its default table format
 
 	output, err := conn.ExecuteDockerCommand(args)
 	if err != nil {
@@ -621,13 +620,17 @@ func GetSystemDf(conn *synology.Connection, opts *SystemDfOptions) ([]SystemDfIt
 	var usage []SystemDfItem
 	for _, line := range lines[1:] { // Skip header
 		fields := strings.Fields(line)
-		if len(fields) >= 5 {
+		if len(fields) >= 4 {
 			item := SystemDfItem{
-				Type:        fields[0],
-				Total:       fields[1],
-				Active:      fields[2],
-				Size:        fields[3],
-				Reclaimable: fields[4],
+				Type:   fields[0],
+				Total:  fields[1],
+				Active: fields[2],
+				Size:   fields[3],
+			}
+			// Reclaimable might be in different format "493.3MB (92%)"
+			if len(fields) >= 5 {
+				// Join remaining fields for reclaimable (handles parentheses)
+				item.Reclaimable = strings.Join(fields[4:], " ")
 			}
 			usage = append(usage, item)
 		}
@@ -753,7 +756,7 @@ func ListVolumes(conn *synology.Connection, opts *VolumeListOptions) ([]VolumeIn
 	if opts.Format != "" {
 		args = append(args, "--format", opts.Format)
 	} else {
-		args = append(args, "--format", "table {{.Driver}}\t{{.Name}}")
+		args = append(args, "--format", "'table {{.Driver}}\t{{.Name}}'")
 	}
 
 	output, err := conn.ExecuteDockerCommand(args)
@@ -1030,7 +1033,7 @@ func ListNetworks(conn *synology.Connection, opts *NetworkListOptions) ([]Networ
 	if opts.Format != "" {
 		args = append(args, "--format", opts.Format)
 	} else {
-		args = append(args, "--format", "table {{.ID}}\t{{.Name}}\t{{.Driver}}\t{{.Scope}}")
+		args = append(args, "--format", "'table {{.ID}}\t{{.Name}}\t{{.Driver}}\t{{.Scope}}'")
 	}
 
 	for _, filter := range opts.Filter {

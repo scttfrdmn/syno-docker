@@ -2,7 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/scttfrdmn/syno-docker)](https://goreportcard.com/report/github.com/scttfrdmn/syno-docker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v0.2.2-blue.svg)](https://github.com/scttfrdmn/syno-docker/releases/tag/v0.2.2)
+[![Release](https://img.shields.io/badge/release-v0.2.3-blue.svg)](https://github.com/scttfrdmn/syno-docker/releases/tag/v0.2.3)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
 [![Integration Tests](https://img.shields.io/badge/integration%20tests-passing-brightgreen.svg)](#integration-tests)
 

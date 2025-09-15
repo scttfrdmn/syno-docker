@@ -302,22 +302,26 @@ func testVolumeManagement(t *testing.T, runner *TestRunner) {
 	volumeName := "test-vol-" + helpers.RandomString(6)
 	runner.Cleanup.AddVolume(volumeName)
 
+	// Create volume once for all tests at the function level
+	opts := &deploy.VolumeCreateOptions{
+		Driver: "local",
+		Labels: []string{"test=integration", "phase=v0.2.x"},
+	}
+
+	createdName, err := deploy.CreateVolume(runner.Connection, volumeName, opts)
+	if err != nil {
+		t.Fatalf("Failed to create volume for tests: %v", err)
+	}
+
+	if createdName != volumeName {
+		t.Errorf("Expected volume name %s, got %s", volumeName, createdName)
+	}
+
+	t.Logf("✅ Volume %s created successfully for testing", volumeName)
+
 	t.Run("TestVolumeCreate", func(t *testing.T) {
-		opts := &deploy.VolumeCreateOptions{
-			Driver: "local",
-			Labels: []string{"test=integration", "phase=v0.2.x"},
-		}
-
-		createdName, err := deploy.CreateVolume(runner.Connection, volumeName, opts)
-		if err != nil {
-			t.Fatalf("Failed to create volume: %v", err)
-		}
-
-		if createdName != volumeName {
-			t.Errorf("Expected volume name %s, got %s", volumeName, createdName)
-		}
-
-		t.Logf("✅ Volume %s created successfully", volumeName)
+		// This test now just verifies the creation worked
+		t.Logf("✅ Volume creation already verified at function level")
 	})
 
 	t.Run("TestVolumeList", func(t *testing.T) {
@@ -392,37 +396,46 @@ func testVolumeManagement(t *testing.T, runner *TestRunner) {
 	})
 
 	t.Run("TestVolumeUsage", func(t *testing.T) {
-		// Test volume usage by creating a container that uses it
+		// Verify the volume exists first
+		exists, err := helpers.VerifyVolumeExists(runner.Connection, volumeName)
+		if err != nil {
+			t.Fatalf("Failed to check if volume exists: %v", err)
+		}
+		if !exists {
+			t.Fatalf("Volume %s does not exist for usage test", volumeName)
+		}
+
+		// Test volume usage by using our Container function with simpler command
 		containerName := "test-vol-usage-" + helpers.RandomString(6)
 		runner.Cleanup.AddContainer(containerName)
 
-		opts := deploy.NewContainerOptions("alpine:latest")
-		opts.Name = containerName
-		opts.Volumes = []string{fmt.Sprintf("%s:/data", volumeName)}
-		opts.Command = []string{"sh", "-c", "df -h /data && ls -la /data && sleep 10"}
+		volOpts := deploy.NewContainerOptions("alpine:latest")
+		volOpts.Name = containerName
+		volOpts.Volumes = []string{fmt.Sprintf("%s:/data", volumeName)}
+		volOpts.Command = []string{"sh", "-c", "df /data && echo 'Volume mount verified' && sleep 10"}
 
-		containerID, err := deploy.Container(runner.Connection, opts)
+		containerID, err := deploy.Container(runner.Connection, volOpts)
 		if err != nil {
 			t.Fatalf("Failed to deploy container with volume: %v", err)
 		}
 
-		// Wait for container to be running
-		if err := helpers.WaitForContainer(runner.Connection, containerName, "Up", 30*time.Second); err != nil {
-			t.Fatalf("Container did not start: %v", err)
-		}
+		// Wait for container to complete command
+		time.Sleep(5 * time.Second)
 
-		// Give container time to execute commands
-		time.Sleep(3 * time.Second)
-
-		// Check logs to verify volume mount worked
+		// Get container logs to verify volume mount worked
 		logs, err := deploy.GetContainerLogs(runner.Connection, containerName, "all", "", false)
 		if err != nil {
 			t.Fatalf("Failed to get container logs: %v", err)
 		}
 
-		// Check if df command shows /data mount
+		// Check that volume mount was successful
+		if !strings.Contains(logs, "Volume mount verified") {
+			t.Errorf("Expected 'Volume mount verified' in logs, got: %s", logs)
+		}
+
+		// Check that df shows the mount point
 		if !strings.Contains(logs, "/data") {
-			t.Errorf("Expected '/data' mount info in logs, got: %s", logs)
+			t.Errorf("Expected '/data' mount point in df output, got: %s", logs)
 		}
 
 		shortID := containerID
