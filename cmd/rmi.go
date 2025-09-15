@@ -11,8 +11,8 @@ import (
 )
 
 var (
-	rmiForce    bool
-	rmiNoPrune  bool
+	rmiForce   bool
+	rmiNoPrune bool
 )
 
 var rmiCmd = &cobra.Command{

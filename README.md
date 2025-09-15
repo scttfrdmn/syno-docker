@@ -2,7 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/scttfrdmn/syno-docker)](https://goreportcard.com/report/github.com/scttfrdmn/syno-docker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v0.2.0-blue.svg)](https://github.com/scttfrdmn/syno-docker/releases/tag/v0.2.0)
+[![Release](https://img.shields.io/badge/release-v0.2.1-blue.svg)](https://github.com/scttfrdmn/syno-docker/releases/tag/v0.2.1)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
 [![Integration Tests](https://img.shields.io/badge/integration%20tests-passing-brightgreen.svg)](#integration-tests)
 
@@ -27,6 +27,7 @@
 ### Image & System Management
 - 🏗️ **Image operations** - Pull, list, remove images with advanced filtering
 - 📦 **Volume management** - Create, list, inspect, and clean up volumes
+- 🌐 **Network management** - Create, list, inspect networks; connect/disconnect containers
 - 🧹 **System maintenance** - Disk usage, system info, and cleanup tools
 - 📤 **Import/Export** - Backup and restore containers
 
@@ -123,6 +124,14 @@ syno-docker provides **20+ commands** covering the complete Docker workflow:
 - `syno-docker volume inspect` - Detailed volume information
 - `syno-docker volume prune` - Clean unused volumes
 
+### **Network Management**
+- `syno-docker network ls` - List networks with filtering options
+- `syno-docker network create` - Create custom networks with CIDR, gateways
+- `syno-docker network rm` - Remove networks
+- `syno-docker network inspect` - Detailed network information
+- `syno-docker network connect/disconnect` - Attach/detach containers
+- `syno-docker network prune` - Clean unused networks
+
 ### **System Operations**
 - `syno-docker system df` - Show Docker disk usage
 - `syno-docker system info` - Display Docker system information
@@ -152,6 +161,12 @@ syno-docker volume create my-data --driver local
 syno-docker volume ls --quiet
 syno-docker volume inspect my-data
 syno-docker volume rm my-data --force
+
+# Network operations
+syno-docker network create my-app-net --driver bridge --subnet 172.20.0.0/16
+syno-docker network ls --filter driver=bridge
+syno-docker network connect my-app-net web-server --alias web
+syno-docker network disconnect my-app-net web-server
 
 # System maintenance
 syno-docker system df --verbose

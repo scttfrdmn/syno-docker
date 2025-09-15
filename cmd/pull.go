@@ -11,9 +11,9 @@ import (
 )
 
 var (
-	pullAllTags      bool
-	pullPlatform     string
-	pullQuiet        bool
+	pullAllTags             bool
+	pullPlatform            string
+	pullQuiet               bool
 	pullDisableContentTrust bool
 )
 
@@ -44,10 +44,10 @@ func pullImage(cmd *cobra.Command, args []string) error {
 
 	// Pull image
 	opts := &deploy.PullOptions{
-		AllTags:              pullAllTags,
-		Platform:             pullPlatform,
-		Quiet:                pullQuiet,
-		DisableContentTrust:  pullDisableContentTrust,
+		AllTags:             pullAllTags,
+		Platform:            pullPlatform,
+		Quiet:               pullQuiet,
+		DisableContentTrust: pullDisableContentTrust,
 	}
 
 	fmt.Printf("Pulling image %s...\n", imageName)

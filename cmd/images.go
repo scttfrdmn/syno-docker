@@ -13,12 +13,12 @@ import (
 )
 
 var (
-	imagesAll       bool
-	imagesDangling  bool
-	imagesDigests   bool
-	imagesFormat    string
-	imagesNoTrunc   bool
-	imagesQuiet     bool
+	imagesAll      bool
+	imagesDangling bool
+	imagesDigests  bool
+	imagesFormat   string
+	imagesNoTrunc  bool
+	imagesQuiet    bool
 )
 
 var imagesCmd = &cobra.Command{
@@ -45,12 +45,12 @@ func listImages(cmd *cobra.Command, args []string) error {
 
 	// List images
 	opts := &deploy.ImagesOptions{
-		All:       imagesAll,
-		Dangling:  imagesDangling,
-		Digests:   imagesDigests,
-		Format:    imagesFormat,
-		NoTrunc:   imagesNoTrunc,
-		Quiet:     imagesQuiet,
+		All:      imagesAll,
+		Dangling: imagesDangling,
+		Digests:  imagesDigests,
+		Format:   imagesFormat,
+		NoTrunc:  imagesNoTrunc,
+		Quiet:    imagesQuiet,
 	}
 
 	var repository string

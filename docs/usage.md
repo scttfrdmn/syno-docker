@@ -570,6 +570,54 @@ syno-docker volume rm old-data backup-vol --force
 syno-docker volume prune --force
 ```
 
+### Network Management
+
+#### Create and Manage Networks
+```bash
+# Create custom bridge network with subnet
+syno-docker network create my-app-net \
+  --driver bridge \
+  --subnet 172.20.0.0/16 \
+  --gateway 172.20.0.1 \
+  --label project=myapp
+
+# Create internal network (no external access)
+syno-docker network create internal-net --internal
+
+# List networks with filtering
+syno-docker network ls
+syno-docker network ls --filter driver=bridge
+syno-docker network ls --quiet
+```
+
+#### Connect Containers to Networks
+```bash
+# Connect container to custom network
+syno-docker network connect my-app-net web-server --alias web
+
+# Connect with specific IP
+syno-docker network connect my-app-net database \
+  --ip 172.20.0.10 \
+  --alias db
+
+# Disconnect container from network
+syno-docker network disconnect my-app-net web-server
+syno-docker network disconnect my-app-net database --force
+```
+
+#### Network Inspection and Cleanup
+```bash
+# Inspect network details
+syno-docker network inspect my-app-net
+syno-docker network inspect bridge --format '{{.IPAM.Config}}'
+
+# Remove networks
+syno-docker network rm my-app-net internal-net
+
+# Clean unused networks
+syno-docker network prune --force
+```
+
 ### System Operations
 
 #### System Information and Cleanup
@@ -675,6 +723,12 @@ syno-docker system prune
 - `syno-docker volume ls/create/rm` - Volume operations
 - `syno-docker volume inspect` - Volume details
 - `syno-docker volume prune` - Cleanup
+
+### Network Management
+- `syno-docker network ls/create/rm` - Network operations
+- `syno-docker network inspect` - Network details
+- `syno-docker network connect/disconnect` - Container networking
+- `syno-docker network prune` - Cleanup unused networks
 
 ### System Management
 - `syno-docker system df/info` - System information

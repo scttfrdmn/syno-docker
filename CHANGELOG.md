@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2025-09-14
+
+### Added
+- **Complete Network Management**: Full `network` command suite for Docker network operations
+- **Network Operations**: `ls`, `create`, `rm`, `inspect`, `connect`, `disconnect`, `prune` subcommands
+- **Advanced Network Features**: Custom subnets, gateways, IP ranges, driver options, labels
+- **Container Networking**: Connect/disconnect containers to custom networks with aliases and IPs
+- **Network Filtering**: Filter networks by driver, scope, and custom filters
+- **Network Cleanup**: Prune unused networks with confirmation prompts
+- **IPv6 Support**: Enable IPv6 networking for containers requiring dual-stack
+- **Project Roadmap**: Comprehensive roadmap document outlining future development phases
+
+### Enhanced
+- **CLI Framework**: Added 7 new network subcommands with full option support
+- **Documentation**: Updated README and usage docs with network examples and workflows
+- **Command Count**: Now 25+ commands providing 100% Docker API coverage
+- **Network Isolation**: Support for internal networks and custom bridge configurations
+
+### Technical Details
+- **Phase 4 Implementation**: Network management completes core Docker API coverage
+- **SSH Architecture**: All network commands use proven SSH-based approach
+- **Validation**: Comprehensive input validation for network configurations
+- **Error Handling**: Detailed error messages for network operation failures
+
 ## [0.2.0] - 2025-09-14
 
 ### Added

@@ -53,6 +53,7 @@ func init() {
 	rootCmd.AddCommand(rmiCmd)
 	rootCmd.AddCommand(systemCmd)
 	rootCmd.AddCommand(volumeCmd)
+	rootCmd.AddCommand(networkCmd)
 	rootCmd.AddCommand(inspectCmd)
 	rootCmd.AddCommand(exportCmd)
 	rootCmd.AddCommand(importCmd)
