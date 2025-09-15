@@ -333,7 +333,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - 🗺️ [Development Roadmap](ROADMAP.md)
 - 🐛 [Issue Tracker](https://github.com/scttfrdmn/syno-docker/issues)
 - 💬 [Discussions](https://github.com/scttfrdmn/syno-docker/discussions)
-- 📧 Email: support@syno-docker.com
 
 ---
 
