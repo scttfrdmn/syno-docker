@@ -6,9 +6,13 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
 [![Integration Tests](https://img.shields.io/badge/integration%20tests-passing-brightgreen.svg)](#integration-tests)
 
-**syno-docker** is a comprehensive Docker management CLI tool for Synology NAS devices running DSM 7.2+. It provides the full Docker workflow - from image management to container lifecycle to system maintenance - all optimized for Synology Container Manager.
+## 🚀 Comprehensive Docker Management CLI for Synology NAS with Container Manager
+
+**syno-docker** is the complete Docker management solution for Synology NAS devices running DSM 7.2+ Container Manager. Deploy, manage, and monitor Docker containers on your Synology DiskStation with 40+ commands covering the full Docker workflow - container lifecycle, networking, volumes, images, and system operations. Perfect for home labs, self-hosting, and production deployments on Synology NAS.
 
 **✅ Verified Working** on real Synology hardware with comprehensive integration testing.
+
+> **Sister Project**: [qnap-docker](https://github.com/scttfrdmn/qnap-docker) - Comprehensive Docker management for QNAP NAS with Container Station
 
 ## Features
 
@@ -42,14 +46,19 @@
 
 ### Installation
 
-```bash
-# Install via Homebrew (recommended)
-brew install scttfrdmn/tap/syno-docker
+**Multiple installation methods for macOS, Linux, and direct download:**
 
-# Or download binary from releases
+```bash
+# Install via Homebrew (macOS/Linux) - Recommended
+brew install scttfrdmn/syno-docker/syno-docker
+
+# Direct binary download (all platforms)
 curl -L https://github.com/scttfrdmn/syno-docker/releases/latest/download/syno-docker-$(uname -s)-$(uname -m) -o syno-docker
 chmod +x syno-docker
 sudo mv syno-docker /usr/local/bin/
+
+# Linux packages (Ubuntu/Debian/CentOS/Alpine)
+# Download .deb/.rpm/.apk from releases page
 ```
 
 ### Setup
