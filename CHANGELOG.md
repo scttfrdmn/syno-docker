@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-09-14
+
+### Added
+- **Complete Docker Command Suite**: 15 new commands implementing comprehensive Docker management
+- **Container Management**: `logs`, `exec`, `start`, `stop`, `restart` for full container lifecycle control
+- **Resource Monitoring**: `stats` command for real-time container resource usage statistics
+- **Image Operations**: `pull`, `images`, `rmi` commands with advanced filtering and platform options
+- **Volume Management**: Complete `volume` command suite (`ls`, `create`, `rm`, `inspect`, `prune`)
+- **System Management**: `system` command group (`df`, `info`, `prune`) for Docker system maintenance
+- **Advanced Features**: `inspect`, `export`, `import` for detailed analysis and container backup/restore
+- **Interactive Execution**: Full support for interactive container commands with TTY allocation
+- **Log Following**: Real-time log streaming with filtering options (tail, since, timestamps)
+- **Format Templates**: Go template support for customized output formatting across commands
+- **Batch Operations**: Support for multiple containers/images/volumes in single commands
+
+### Enhanced
+- **CLI Framework**: Expanded from 5 to 20+ commands with consistent help and option handling
+- **SSH Architecture**: All new commands use the proven SSH-based approach for reliability
+- **Error Handling**: Comprehensive error messages and validation across all new commands
+- **Documentation**: Updated README and usage docs with complete command reference
+- **Testing**: All new commands integrated with existing test suite
+
+### Technical Details
+- **Phase 1**: Essential container management (logs, exec, restart, stop, start)
+- **Phase 2**: Monitoring and image management (stats, images, pull, rmi, system)
+- **Phase 3**: Advanced features (volume, inspect, export, import)
+- **Command Count**: From 5 basic commands to 20+ comprehensive Docker operations
+- **Architecture**: Maintains SSH-based design for maximum compatibility with Synology Container Manager
+
 ## [0.1.7] - 2025-09-14
 
 ### Changed

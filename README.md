@@ -2,24 +2,38 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/scttfrdmn/syno-docker)](https://goreportcard.com/report/github.com/scttfrdmn/syno-docker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v0.1.1-blue.svg)](https://github.com/scttfrdmn/syno-docker/releases/tag/v0.1.1)
+[![Release](https://img.shields.io/badge/release-v0.2.0-blue.svg)](https://github.com/scttfrdmn/syno-docker/releases/tag/v0.2.0)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
 [![Integration Tests](https://img.shields.io/badge/integration%20tests-passing-brightgreen.svg)](#integration-tests)
 
-**syno-docker** is a CLI tool that simplifies Docker container deployment to Synology NAS devices running DSM 7.2+. It handles SSH connection management, Docker client setup, and path resolution issues specific to Synology Container Manager.
+**syno-docker** is a comprehensive Docker management CLI tool for Synology NAS devices running DSM 7.2+. It provides the full Docker workflow - from image management to container lifecycle to system maintenance - all optimized for Synology Container Manager.
 
 **✅ Verified Working** on real Synology hardware with comprehensive integration testing.
 
 ## Features
 
+### Core Deployment
 - 🚀 **One-command deployment** - Deploy containers as easily as `syno-docker run nginx`
-- 🔐 **SSH key & ssh-agent support** - Works with both SSH key files and ssh-agent
-- 👤 **Administrator user support** - Compatible with both `admin` and custom admin users
-- 📦 **docker-compose support** - Deploy complex multi-container applications
-- 🎯 **DSM 7.2+ optimized** - Built specifically for Container Manager
+- 📦 **Docker Compose support** - Deploy complex multi-container applications
 - 🔧 **PATH resolution** - Automatically handles Docker binary location issues
 - 📂 **Volume path helpers** - Smart handling of Synology volume paths
-- 🔄 **Container lifecycle** - Deploy, list, and remove containers easily
+
+### Container Management
+- 🔄 **Complete lifecycle** - Start, stop, restart, remove containers
+- 📋 **Container inspection** - Detailed container information and logs
+- 🖥️ **Interactive execution** - Run commands inside containers (`exec`)
+- 📊 **Resource monitoring** - Real-time container statistics
+
+### Image & System Management
+- 🏗️ **Image operations** - Pull, list, remove images with advanced filtering
+- 📦 **Volume management** - Create, list, inspect, and clean up volumes
+- 🧹 **System maintenance** - Disk usage, system info, and cleanup tools
+- 📤 **Import/Export** - Backup and restore containers
+
+### Infrastructure
+- 🔐 **SSH key & ssh-agent support** - Works with both SSH key files and ssh-agent
+- 👤 **Administrator user support** - Compatible with both `admin` and custom admin users
+- 🎯 **DSM 7.2+ optimized** - Built specifically for Container Manager
 - ⚡ **Single binary** - No dependencies, just download and use
 - 🧪 **Integration tested** - Verified on real Synology hardware
 
@@ -68,90 +82,81 @@ syno-docker run nginx:latest \
 # Deploy from docker-compose.yml
 syno-docker deploy ./docker-compose.yml
 
-# List running containers
+# List running containers and monitor resources
 syno-docker ps
+syno-docker stats
 
-# Remove container
+# Get container logs and execute commands
+syno-docker logs web-server --follow
+syno-docker exec web-server /bin/bash
+
+# Remove container when done
 syno-docker rm web-server
 ```
 
-## Commands
+## Commands Overview
 
-### `syno-docker init <host>`
+syno-docker provides **20+ commands** covering the complete Docker workflow:
 
-Setup connection to your Synology NAS.
+### **Container Lifecycle**
+- `syno-docker run` - Deploy single containers with full configuration options
+- `syno-docker ps` - List containers (running/all) with detailed status
+- `syno-docker start/stop/restart` - Control container state
+- `syno-docker rm` - Remove containers (with force option)
 
-```bash
-syno-docker init 192.168.1.100 \
-  --user admin \
-  --port 22 \
-  --key ~/.ssh/id_rsa \
-  --volume-path /volume1/docker
-```
+### **Container Operations**
+- `syno-docker logs` - View container logs (follow, tail, timestamps)
+- `syno-docker exec` - Execute commands inside containers (interactive/non-interactive)
+- `syno-docker stats` - Real-time resource usage statistics
+- `syno-docker inspect` - Detailed container/image/volume information
 
-### `syno-docker run <image>`
+### **Image Management**
+- `syno-docker pull` - Pull images from registries (platform-specific, all tags)
+- `syno-docker images` - List images (all, dangling, with digests)
+- `syno-docker rmi` - Remove images (force, preserve parents)
+- `syno-docker import/export` - Backup and restore containers
 
-Deploy a single container.
+### **Volume Management**
+- `syno-docker volume ls` - List volumes with driver information
+- `syno-docker volume create` - Create volumes with custom drivers/labels
+- `syno-docker volume rm` - Remove volumes (with force)
+- `syno-docker volume inspect` - Detailed volume information
+- `syno-docker volume prune` - Clean unused volumes
 
-```bash
-syno-docker run postgres:13 \
-  --name database \
-  --port 5432:5432 \
-  --volume /volume1/postgres:/var/lib/postgresql/data \
-  --env POSTGRES_PASSWORD=secretpassword \
-  --restart unless-stopped
-```
+### **System Operations**
+- `syno-docker system df` - Show Docker disk usage
+- `syno-docker system info` - Display Docker system information
+- `syno-docker system prune` - Clean unused containers, images, networks
 
-**Options:**
-- `--name` - Container name (auto-generated if not specified)
-- `--port` - Port mappings (format: `host:container`)
-- `--volume` - Volume mappings (format: `host:container`)
-- `--env` - Environment variables (format: `KEY=value`)
-- `--restart` - Restart policy (`no`, `always`, `unless-stopped`, `on-failure`)
-- `--network` - Network mode (default: `bridge`)
-- `--user` - User to run container as (format: `uid:gid`)
-- `--workdir` - Working directory inside container
-- `--command` - Command to run in container
+### **Multi-Container Applications**
+- `syno-docker deploy` - Deploy from docker-compose.yml files
+- `syno-docker init` - Setup connection to Synology NAS
 
-### `syno-docker deploy <compose-file>`
-
-Deploy from docker-compose.yml file.
+### **Key Command Examples**
 
 ```bash
-syno-docker deploy ./docker-compose.yml \
-  --project my-app \
-  --env-file .env
-```
+# Container lifecycle
+syno-docker run nginx:latest --name web --port 80:80 --restart unless-stopped
+syno-docker logs web --follow --timestamps
+syno-docker exec -it web /bin/bash
+syno-docker restart web
+syno-docker stop web && syno-docker rm web
 
-**Supported compose features:**
-- Multi-service deployments
-- Port mappings
-- Volume mounts
-- Environment variables
-- Environment variable substitution
-- Restart policies
-- Networks (basic support)
-- Dependencies (deployment order only)
+# Image management
+syno-docker pull postgres:13 --platform linux/arm64
+syno-docker images --dangling
+syno-docker rmi old-image --force
 
-### `syno-docker ps`
+# Volume operations
+syno-docker volume create my-data --driver local
+syno-docker volume ls --quiet
+syno-docker volume inspect my-data
+syno-docker volume rm my-data --force
 
-List containers.
-
-```bash
-# Show running containers
-syno-docker ps
-
-# Show all containers (including stopped)
-syno-docker ps --all
-```
-
-### `syno-docker rm <container>`
-
-Remove container.
-
-```bash
-# Remove stopped container
-syno-docker rm web-server
+# System maintenance
+syno-docker system df --verbose
+syno-docker system prune --all --volumes --force
+syno-docker stats --all --no-stream
 
 # Force remove running container
 syno-docker rm web-server --force

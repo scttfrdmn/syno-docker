@@ -479,8 +479,224 @@ syno-docker init nas2.local
 7. **Security**: Don't expose unnecessary ports to the internet
 8. **Monitoring**: Monitor container logs and resource usage
 
+## Advanced Commands (v0.2.0+)
+
+syno-docker v0.2.0 introduces 15+ additional commands for comprehensive Docker management:
+
+### Container Operations
+
+#### Monitor Container Logs
+```bash
+# Show recent logs
+syno-docker logs web-server
+
+# Follow logs in real-time
+syno-docker logs web-server --follow --timestamps
+
+# Show last 50 lines since 1 hour ago
+syno-docker logs web-server --tail 50 --since 1h
+```
+
+#### Execute Commands in Containers
+```bash
+# Interactive shell
+syno-docker exec -it web-server /bin/bash
+
+# Run non-interactive command
+syno-docker exec web-server ls -la /app
+
+# Run as specific user with environment variables
+syno-docker exec --user www-data --env DEBUG=true web-server whoami
+```
+
+#### Container Lifecycle Control
+```bash
+# Start/stop containers
+syno-docker start web-server database
+syno-docker stop web-server --time 30
+syno-docker restart web-server --time 10
+
+# Monitor resource usage
+syno-docker stats
+syno-docker stats web-server --no-stream
+```
+
+### Image Management
+
+#### Pull and Manage Images
+```bash
+# Pull specific platform image
+syno-docker pull nginx:alpine --platform linux/arm64
+
+# List all images including intermediates
+syno-docker images --all --digests
+
+# Remove unused images
+syno-docker rmi $(syno-docker images --dangling --quiet)
+syno-docker rmi old-image:v1 --force
+```
+
+#### Import/Export Containers
+```bash
+# Export container to file
+syno-docker export web-server --output backup.tar
+
+# Import as new image
+syno-docker import backup.tar my-backup:latest \
+  --message "Backup from production"
+```
+
+### Volume Management
+
+#### Create and Manage Volumes
+```bash
+# Create volume with labels
+syno-docker volume create app-data \
+  --driver local \
+  --label app=myapp \
+  --label env=production
+
+# List volumes and inspect
+syno-docker volume ls
+syno-docker volume inspect app-data
+```
+
+#### Volume Cleanup
+```bash
+# Remove specific volumes
+syno-docker volume rm old-data backup-vol --force
+
+# Clean unused volumes
+syno-docker volume prune --force
+```
+
+### System Operations
+
+#### System Information and Cleanup
+```bash
+# Check disk usage
+syno-docker system df --verbose
+
+# View system information
+syno-docker system info
+
+# Clean everything unused
+syno-docker system prune --all --volumes --force
+```
+
+#### Detailed Object Inspection
+```bash
+# Inspect containers with custom format
+syno-docker inspect web-server --format '{{.State.Status}}'
+
+# Inspect images with size information
+syno-docker inspect nginx:alpine --type image --size
+
+# Get volume mount information
+syno-docker inspect web-server --format '{{range .Mounts}}{{.Source}}:{{.Destination}}{{end}}'
+```
+
+### Workflow Examples
+
+#### Development Workflow
+```bash
+# Setup development environment
+syno-docker run node:16-alpine \
+  --name dev-app \
+  --port 3000:3000 \
+  --volume /volume1/projects/myapp:/workspace \
+  --workdir /workspace
+
+# Monitor during development
+syno-docker logs dev-app --follow &
+syno-docker stats dev-app --no-stream
+
+# Debug issues
+syno-docker exec -it dev-app sh
+syno-docker inspect dev-app --format '{{.State.ExitCode}}'
+```
+
+#### Production Maintenance
+```bash
+# Check system health
+syno-docker system df
+syno-docker system info | grep "Containers:"
+
+# Update production containers
+syno-docker pull myapp:latest
+syno-docker stop myapp-prod
+syno-docker rm myapp-prod
+syno-docker run myapp:latest --name myapp-prod [options...]
+
+# Backup and cleanup
+syno-docker export myapp-prod --output backup-$(date +%Y%m%d).tar
+syno-docker system prune --force
+syno-docker volume prune --force
+```
+
+#### Troubleshooting Workflow
+```bash
+# Investigate container issues
+syno-docker logs problematic-container --tail 100 --timestamps
+syno-docker exec problematic-container ps aux
+syno-docker inspect problematic-container --format '{{.State.Health}}'
+
+# Check resource usage
+syno-docker stats --all --no-stream
+syno-docker system df
+
+# Clean up if needed
+syno-docker stop problematic-container
+syno-docker rm problematic-container --force
+syno-docker system prune
+```
+
+## Command Reference Summary
+
+### Container Lifecycle
+- `syno-docker run` - Deploy containers
+- `syno-docker ps` - List containers
+- `syno-docker start/stop/restart` - Control state
+- `syno-docker rm` - Remove containers
+
+### Container Operations
+- `syno-docker logs` - View logs
+- `syno-docker exec` - Execute commands
+- `syno-docker stats` - Resource monitoring
+- `syno-docker inspect` - Detailed information
+
+### Image Management
+- `syno-docker pull` - Download images
+- `syno-docker images` - List images
+- `syno-docker rmi` - Remove images
+- `syno-docker export/import` - Backup/restore
+
+### Volume Management
+- `syno-docker volume ls/create/rm` - Volume operations
+- `syno-docker volume inspect` - Volume details
+- `syno-docker volume prune` - Cleanup
+
+### System Management
+- `syno-docker system df/info` - System information
+- `syno-docker system prune` - System cleanup
+- `syno-docker deploy/init` - Application deployment
+
+## Best Practices
+
+1. **Use SSH Keys**: Always use SSH key authentication instead of passwords
+2. **Volume Paths**: Use absolute paths starting with `/volume1/` for clarity
+3. **Restart Policies**: Use `unless-stopped` for production containers
+4. **Resource Limits**: Monitor resource usage on your NAS
+5. **Backups**: Backup your configuration and important volumes
+6. **Updates**: Regularly update container images and syno-docker itself
+7. **Security**: Don't expose unnecessary ports to the internet
+8. **Monitoring**: Monitor container logs and resource usage
+9. **Cleanup**: Regularly prune unused images, containers, and volumes
+10. **Documentation**: Document your container configurations and dependencies
+
 ## Next Steps
 
 - Explore the [examples](examples/) directory for more complex deployments
 - Check out the [FAQ](faq.md) for common questions
 - Join the community discussions for tips and tricks
+- Review the [CHANGELOG.md](../CHANGELOG.md) for latest features and updates
