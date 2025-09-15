@@ -2,7 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/scttfrdmn/syno-docker)](https://goreportcard.com/report/github.com/scttfrdmn/syno-docker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v0.2.1-blue.svg)](https://github.com/scttfrdmn/syno-docker/releases/tag/v0.2.1)
+[![Release](https://img.shields.io/badge/release-v0.2.2-blue.svg)](https://github.com/scttfrdmn/syno-docker/releases/tag/v0.2.2)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
 [![Integration Tests](https://img.shields.io/badge/integration%20tests-passing-brightgreen.svg)](#integration-tests)
 
@@ -268,29 +268,35 @@ make coverage         # Generate coverage report
 
 ### Integration Tests
 
-syno-docker includes comprehensive integration tests that validate functionality against real Synology hardware:
+syno-docker includes comprehensive integration tests that validate all 40+ commands against real Synology hardware:
 
 ```bash
-# Test connection to your NAS
+# Comprehensive test suite for all v0.2.x commands
+go test -v -integration -run TestComprehensiveCommandSuite \
+  -nas-host=your-nas-ip -nas-user=admin ./tests/integration/
+
+# Test specific command categories
+go test -v -integration -run TestComprehensiveCommandSuite/ContainerOperations ./tests/integration/
+go test -v -integration -run TestComprehensiveCommandSuite/NetworkManagement ./tests/integration/
+
+# Legacy basic tests
 go test -v -run TestConnectionToChubChub ./tests/integration/
-
-# Test Docker commands via SSH
-go test -v -run TestDirectDockerCommands ./tests/integration/
-
-# Full end-to-end testing
 go test -v -run TestSynoDockerEndToEnd ./tests/integration/
 
 # All integration tests
-go test -v ./tests/integration/
+go test -v -integration -nas-host=your-nas-ip ./tests/integration/
 ```
 
-**Integration test coverage:**
+**Comprehensive integration test coverage (v0.2.2+):**
+- ✅ **Container Operations**: logs, exec, start/stop/restart, stats with real scenarios
+- ✅ **Image Management**: pull, images, rmi, export/import with registry interactions
+- ✅ **Volume Management**: volume lifecycle, mounting, data persistence validation
+- ✅ **Network Management**: network creation, container connectivity, isolation testing
+- ✅ **System Operations**: system df/info/prune with actual resource cleanup
+- ✅ **Advanced Features**: inspect, backup/restore workflows
+- ✅ **Error Handling**: Invalid configurations and failure scenarios
+- ✅ **Resource Cleanup**: Comprehensive cleanup verification
 - ✅ SSH connectivity and authentication (ssh-agent + key file)
-- ✅ Docker command execution over SSH
-- ✅ Container deployment, lifecycle, and removal
-- ✅ HTTP endpoint validation for deployed services
-- ✅ Volume mounting and file system access
-- ✅ Error handling for invalid configurations
 - ✅ Container Manager service status validation
 
 ### Quality Checks

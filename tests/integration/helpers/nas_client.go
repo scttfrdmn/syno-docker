@@ -164,3 +164,109 @@ func TestContainerConnectivity(conn *synology.Connection, fromContainer, toConta
 
 	return nil
 }
+
+// WaitForContainerState waits for container to reach specific state with timeout
+func WaitForContainerState(conn *synology.Connection, containerName, expectedState string, timeout time.Duration) error {
+	deadline := time.Now().Add(timeout)
+
+	for time.Now().Before(deadline) {
+		containers, err := deploy.ListContainers(conn, true)
+		if err != nil {
+			return fmt.Errorf("failed to list containers: %w", err)
+		}
+
+		for _, container := range containers {
+			if container.Name == containerName {
+				if strings.Contains(strings.ToLower(container.Status), strings.ToLower(expectedState)) {
+					return nil
+				}
+				break
+			}
+		}
+
+		time.Sleep(2 * time.Second)
+	}
+
+	return fmt.Errorf("container %s did not reach state '%s' within %v", containerName, expectedState, timeout)
+}
+
+// VerifyImageExists checks if an image exists in the image list
+func VerifyImageExists(conn *synology.Connection, imageName string) (bool, error) {
+	images, err := deploy.ListImages(conn, "", &deploy.ImagesOptions{All: true})
+	if err != nil {
+		return false, fmt.Errorf("failed to list images: %w", err)
+	}
+
+	for _, img := range images {
+		fullName := img.Repository + ":" + img.Tag
+		if fullName == imageName || img.Repository == imageName {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
+// VerifyVolumeExists checks if a volume exists in the volume list
+func VerifyVolumeExists(conn *synology.Connection, volumeName string) (bool, error) {
+	volumes, err := deploy.ListVolumes(conn, &deploy.VolumeListOptions{})
+	if err != nil {
+		return false, fmt.Errorf("failed to list volumes: %w", err)
+	}
+
+	for _, vol := range volumes {
+		if vol.Name == volumeName {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
+// VerifyNetworkExists checks if a network exists in the network list
+func VerifyNetworkExists(conn *synology.Connection, networkName string) (bool, error) {
+	networks, err := deploy.ListNetworks(conn, &deploy.NetworkListOptions{})
+	if err != nil {
+		return false, fmt.Errorf("failed to list networks: %w", err)
+	}
+
+	for _, net := range networks {
+		if net.Name == networkName {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
+// CreateTestFileInContainer creates a file inside a running container
+func CreateTestFileInContainer(conn *synology.Connection, containerName, filePath, content string) error {
+	opts := &deploy.ExecOptions{
+		Interactive: false,
+		TTY:         false,
+	}
+
+	cmd := []string{"sh", "-c", fmt.Sprintf("echo '%s' > %s", content, filePath)}
+	_, err := deploy.ExecCommand(conn, containerName, cmd, opts)
+	if err != nil {
+		return fmt.Errorf("failed to create file %s in container %s: %w", filePath, containerName, err)
+	}
+
+	return nil
+}
+
+// ReadTestFileFromContainer reads a file from inside a running container
+func ReadTestFileFromContainer(conn *synology.Connection, containerName, filePath string) (string, error) {
+	opts := &deploy.ExecOptions{
+		Interactive: false,
+		TTY:         false,
+	}
+
+	cmd := []string{"cat", filePath}
+	output, err := deploy.ExecCommand(conn, containerName, cmd, opts)
+	if err != nil {
+		return "", fmt.Errorf("failed to read file %s from container %s: %w", filePath, containerName, err)
+	}
+
+	return strings.TrimSpace(output), nil
+}

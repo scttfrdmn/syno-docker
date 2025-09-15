@@ -1,10 +1,18 @@
 # syno-docker Integration Test Suite
 
-This comprehensive integration test suite validates syno-docker functionality against a real Synology NAS running DSM 7.2+ with Container Manager.
+This comprehensive integration test suite validates all 40+ syno-docker commands against a real Synology NAS running DSM 7.2+ with Container Manager.
 
-## 🎯 **Test Coverage**
+## 🎯 **Complete Test Coverage (v0.2.2+)**
 
-### Core Functionality Tests
+### Comprehensive Command Testing
+- **Container Operations**: logs, exec, start/stop/restart, stats with real container scenarios
+- **Image Management**: pull, images, rmi, export/import with registry interactions
+- **Volume Management**: Complete volume lifecycle, mounting, and data persistence validation
+- **Network Management**: Network creation, container connectivity, multi-container communication
+- **System Operations**: system df/info/prune with actual resource verification
+- **Advanced Features**: inspect, backup/restore workflows with real data
+
+### Legacy Core Functionality Tests
 - **Basic Deployment**: Single container deployment with various configurations
 - **Compose Deployment**: Multi-container applications using docker-compose.yml
 - **Lifecycle Management**: Container start, stop, restart, and removal operations
@@ -86,7 +94,29 @@ export NAS_SSH_KEY="~/.ssh/id_rsa"
 
 ## 🚀 **Running Tests**
 
-### Basic Test Run
+### Comprehensive Test Run (v0.2.2+)
+```bash
+# Run complete command suite tests (all 40+ commands)
+go test -v -integration \
+    -nas-host=192.168.1.100 \
+    -nas-user=admin \
+    -nas-key=~/.ssh/id_rsa \
+    -run TestComprehensiveCommandSuite \
+    ./tests/integration/
+
+# Run specific command category tests
+go test -v -integration \
+    -nas-host=192.168.1.100 \
+    -run TestComprehensiveCommandSuite/ContainerOperations \
+    ./tests/integration/
+
+go test -v -integration \
+    -nas-host=192.168.1.100 \
+    -run TestComprehensiveCommandSuite/NetworkManagement \
+    ./tests/integration/
+```
+
+### Basic Test Run (Legacy)
 ```bash
 # Run all integration tests
 go test -v -integration \
@@ -95,7 +125,7 @@ go test -v -integration \
     -nas-key=~/.ssh/id_rsa \
     ./tests/integration/...
 
-# Run specific test suite
+# Run specific legacy test suite
 go test -v -integration \
     -nas-host=192.168.1.100 \
     -run TestBasicDeployment \

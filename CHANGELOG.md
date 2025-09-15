@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2025-09-14
+
+### Added
+- **Comprehensive Integration Test Suite**: End-to-end testing for all 40+ commands on real Synology hardware
+- **Container Operations Testing**: logs, exec, start/stop/restart, stats with real container scenarios
+- **Image Management Testing**: pull, images, rmi, export/import with registry interactions
+- **Volume Management Testing**: Complete volume lifecycle, mounting, and data persistence validation
+- **Network Management Testing**: Network creation, container connectivity, multi-container communication
+- **System Operations Testing**: system df/info/prune with actual resource verification
+- **Advanced Test Helpers**: Container state waiting, file operations, connectivity testing
+- **Resource Cleanup Verification**: Ensures all test resources are properly cleaned up
+- **Error Scenario Coverage**: Validates proper error handling across all commands
+
+### Enhanced
+- **Test Infrastructure**: Expanded helpers for volume, network, and advanced container operations
+- **Test Coverage**: Comprehensive validation of all v0.2.x functionality on real hardware
+- **Quality Assurance**: 90%+ integration test coverage goal for production confidence
+- **CI Integration**: Ready for automated testing in GitHub Actions workflows
+- **Parallel Execution**: Support for faster test execution with proper resource isolation
+
+### Technical Details
+- **Test Organization**: Structured test suites for each command phase (container, image, volume, network, system)
+- **Real Hardware Validation**: Tests execute against actual Synology Container Manager
+- **State Verification**: Validates container states, resource existence, and cleanup completion
+- **Performance Testing**: Resource usage validation and timeout handling
+- **Cross-Command Integration**: Tests interactions between different command categories
+
 ## [0.2.1] - 2025-09-14
 
 ### Added
